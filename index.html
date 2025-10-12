@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>机甲档案库</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            border-bottom: 2px solid #a8d8ff;
+        }
+        
+        h1 {
+            font-size: 36px;
+            color: #0066cc;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 3px rgba(0, 102, 204, 0.3);
+        }
+        
+        .subtitle {
+            color: #6699cc;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        
+        .mechs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .mech-card {
+            background: linear-gradient(145deg, #f5f9ff, #ffffff #ffffff);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(168, 216, 255, 0.25);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #e1f0ff;
+        }
+        
+        .mech-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(100, 150, 220, 0.35);
+        }
+        
+        .mech-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #cfe5ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0066cc;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .mech-info {
+            padding: 15px;
+        }
+        
+        .mech-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #004499;
+            margin-bottom: 5px;
+        }
+        
+        .mech-type {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        /* 模态框样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 51, 102, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            backdrop-filter: blur(2px);
+        }
+        
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 68, 153, 0.45);
+            position: relative;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            font-size: 28px;
+            color: #0066cc;
+            cursor: pointer;
+            z-index: 99;
+            font-weight: bold;
+            transition: color 0.2s ease;
+        }
+        
+        .close-btn:hover {
+            color: #003366;
+        }
+        
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background-color: #b8dcff;
+        }
+        
+        .modal-details {
+            padding: 24px;
+        }
+        
+        .modal-title {
+            font-size: 26px;
+            color: #0055aa;
+            margin-bottom: 7px;
+            border-bottom: 1px solid #e1f0ff;
+            padding-bottom: 13px;
+        }
+        
+        .modal-subtitle {
+            color: #4477bb;
+            font-size: 17px;
+            margin-bottom: 19px;
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 21px;
+            margin-top: 23px;
+        }
+        
+        .spec-item {
+            background-color: #f0f7ff;
+            padding: 11px;
+            border-radius: 7px;
+            border-left: 3px solid #66aaff;
+        }
+        
+        .spec-label {
+            font-size: 13px;
+            color: #5588cc;
+            margin-bottom: 4px;
+        }
+        
+        .spec-value {
+            font-size: 16px;
+            color: #224477;
+            font-weight: bold;
+        }
+        
+        .description {
+            margin-top: 27px;
+            line-height: 1.65;
+            color: #444;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 29px;
+            color: #6688bb;
+            border-top: 1px solid #d0e7ff;
+        }
+
+        /* 响应式调整 */
+        @media (min-width: 768px) {
+            .modal-body {
+                flex-direction: row;
+            }
+            
+            .modal-image {
+                width: 42%;
+                height: auto;
+            }
+            
+            .modal-details {
+                width: 58%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>未来机甲档案库</h1>
+            <p class="subtitle">探索尖端战斗机械的设计与性能</p>
+        </header>
+        
+        <div class="mechs-grid">
+            <!-- 机甲1 -->
+            <div class="mech-card" data-id="1">
+                <div class="mech-img">雷霆战士MK-II</div>
+                <div class="mech-info">
+                    <div class="mech-name">雷霆战士MK-II</div>
+                    <div class="mech-type">重型突击型机甲</div>
+                </div>
+            </div>
+            
+            <!-- 机甲2 -->
+            <div class="mech-card" data-id="2">
+                <div class="mech-img">幻影猎手V3</div>
+                <div class="mech-info">
+                    <div class="mech-name">幻影猎手V3</div>
+                    <div class="mech-type">隐形侦察型机甲</div>
+                </div>
+            </div>
+            
+            <!-- 机甲3 -->
+            <div class="mech-card" data-id="3">
+                <div class="mech-img">铁壁守护者</div>
+                <div class="mech-info">
+                    <div class="mech-name">铁壁守护者</div>
+                    <div class="mech-type">防御堡垒型机甲</div>
+                </div>
+            </div>
+            
+            <!-- 机甲4 -->
+            <div class="mech-card" data-id="4">
+                <div class="mech-img">风暴突击兵</div>
+                <div class="mech-info">
+                    <div class="mech-name">风暴突击兵</div>
+                    <div class="mech-type">高速机动型机甲</div>
+                </div>
+            </div>
+            
+            <!-- 机甲5 -->
+            <div class="mech-card" data-id="5">
+                <div class="mech-img">深渊潜行者</div>
+                <div class="mech-info">
+                    <div class="mech-name">深渊潜行者</div>
+                    <div class="mech-type">两栖作战型机甲</div>
+                </div>
+            </div>
+            
+            <!-- 机甲6 -->
+            <div class="mech-card" data-id="6">
+                <div class="mech-img">极光仲裁者</div>
+                <div class="mech-info">
+                    <div class="mech-name">极光仲裁者</div>
+                    <div class="mech-type">指挥控制型机甲</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <span class="close-btn" id="closeBtn">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image" id="modalImage"></div>
+                <div class="modal-details">
+                    <h2 class="modal-title" id="modalTitle"></h2>
+                    <p class="modal-subtitle" id="modalSubtitle"></p>
+                    
+                    <div class="specs-grid">
+                        <div class="spec-item">
+                            <div class="spec-label">高度</div>
+                            <div class="spec-value" id="heightValue"></div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">重量</div>
+                            <div class="spec-value" id="weightValue"></div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">装甲类型</div>
+                            <div class="spec-value" id="armorValue"></div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">动力系统</div>
+                            <div class="spec-value" id="powerValue"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="description" id="descriptionText"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 未来机甲档案库 | 尖端科技研究中心</p>
+    </footer>
+
+    <script>
+        // 机甲数据
+        const mechsData = {
+            1: {
+                title: "雷霆战士MK-II",
+                subtitle: "重型突击型机甲",
+                imageText: "雷霆战士MK-II",
+                height: "8.2米",
+                weight: "42吨",
+                armor: "复合钛合金装甲",
+                power: "核聚变反应堆",
+                description: "雷霆战士MK-II是战场上最具冲击力的重型机甲之一。装备有双联装等离子炮和背部导弹发射系统，能够在短时间内对敌方阵地实施毁灭性打击。其厚重的装甲能够承受绝大多数常规武器的攻击，是正面突破战场的理想选择。"
+            },
+            2: {
+                title: "幻影猎手V3",
+                subtitle: "隐形侦察型机甲",
+                imageText: "幻影猎手V3",
+                height: "6.5米",
+                weight: "28吨",
+                armor: "纳米隐身涂层",
+                power: "静音电力推进系统",
+                description: "幻影猎手V3专为隐秘行动设计，配备先进的主动伪装系统和热能屏蔽装置，能够在敌方眼皮底下执行侦察任务。其轻型武器系统虽不适用于正面交战，但在特种作战中表现出色。"
+            },
+            3: {
+                title: "铁壁守护者",
+                subtitle: "防御堡垒型机甲",
+                imageText: "铁壁守护者",
+                height: "9.5米",
+                weight: "55吨",
+                armor: "多层复合装甲板",
+                power: "重载动力核心",
+                description: "铁壁守护者是战场上的移动堡垒，拥有无与伦比的防御能力。其能量护盾发生器能够在短时间内抵御高强度火力攻击，同时为友军提供掩护。虽然移动速度较慢，但一旦部署到位，便成为难以逾越的防线。"
+            },
+            4: {
+                title: "风暴突击兵",
+                subtitle: "高速机动型机甲",
+                imageText: "风暴突击兵",
+                height: "7.1米",
+                weight: "32吨",
+                armor: "轻量化合金框架",
+                power: "涡轮增压引擎",
+                description: "风暴突击兵以其卓越的机动性和速度闻名。配备有跳跃喷射器和地形适应系统，能够迅速穿越复杂地形并发起闪电般的突袭。适合执行敌后破坏和快速打击任务。"
+            },
+            5: {
+                title: "深渊潜行者",
+                subtitle: "两栖作战型机甲",
+                imageText: "深渊潜行者",
+                height: "7.8米",
+                weight: "38吨",
+                armor: "防水耐压外壳",
+                power: "混合推进系统",
+                description: "深渊潜行者是一款专为水陆两栖作战设计的机甲。其密封式结构和推进装置使其能够在深水环境中自由行动，同时保持陆地上的战斗力。适用于海岸线防御和水下突袭任务。"
+            },
+            6: {
+                title: "极光仲裁者",
+                subtitle: "指挥控制型机甲",
+                imageText: "极光仲裁者",
+                height: "8.5米",
+                weight: "40吨",
+                armor: "模块化防护系统",
+                power: "高级能源矩阵",
+                description: "极光仲裁者并非传统意义上的战斗单位，而是战场上的神经中枢。它配备有先进的传感器阵列和通讯设备，能够协调多个单位的协同作战，并提供实时战术分析。"
+            }
+        };
+
+        // DOM元素
+        const modalOverlay = document.getElementById('modalOverlay');
+        const closeBtn = document.getElementById('closeBtn');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubtitle = document.getElementById('modalSubtitle');
+        const heightValue = document.getElementById('heightValue');
+        const weightValue = document.getElementById('weightValue');
+        const armorValue = document.getElementById('armorValue');
+        const powerValue = document.getElementById('powerValue');
+        const descriptionText = document.getElementById('descriptionText');
+
+        // 显示模态框
+        function showModal(id) {
+            const data = mechsData[id];
+            if (!data) return;
+            
+            modalImage.textContent = data.imageText;
+            modalTitle.textContent = data.title;
+            modalSubtitle.textContent = data.subtitle;
+            heightValue.textContent = data.height;
+            weightValue.textContent = data.weight;
+            armorValue.textContent = data.armor;
+            powerValue.textContent = data.power;
+            descriptionText.textContent = data.description;
+            
+            modalOverlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+        }
+
+        // 隐藏模态框
+        function hideModal() {
+            modalOverlay.style.display = 'none';
+            document.body.style.overflow = ''; // 恢复滚动
+        }
+
+        // 事件监听
+        document.querySelectorAll('.mech-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const id = parseInt(card.getAttribute('data-id'));
+                showModal(id);
+            });
+        });
+
+        closeBtn.addEventListener('click', hideModal);
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                hideModal();
+            }
+        });
+
+        // ESC键关闭模态框
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                hideModal();
+            }
+        });
+    </script>
+</body>
+</html>
