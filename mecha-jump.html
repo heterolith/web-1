@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跃迁-VII型 - 星核科技机甲详情</title>
+    <!-- 引入外部字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- 关联CSS：公共样式+星核科技专属样式（金黄主题统一，突出科技感） -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/sc-detail.css">
+    <style>
+        /* 机甲详情页专属样式：星核科技金黄主题，适配空间突袭定位 */
+        /* 1. 头部导航（返回阵营页+标题） */
+        .mecha-header {
+            background-color: var(--armor-dark);
+            padding: 1.5rem 0;
+            border-bottom: 2px solid var(--faction2-accent); /* 金黄边框，贴合星核科技科技感 */
+            margin-bottom: 3rem;
+        }
+        .mecha-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        /* 返回按钮（平行四边形，金黄主题，与阵营页按钮风格统一） */
+        .back-to-faction {
+            transform: skewX(-10deg);
+            background-color: rgba(255, 215, 64, 0.2);
+            border: 1px solid var(--faction2-accent);
+            color: var(--faction2-accent);
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-to-faction span {
+            transform: skewX(10deg);
+            display: inline-block;
+        }
+        .back-to-faction:hover {
+            background-color: rgba(255, 215, 64, 0.3);
+            transform: translateY(-2px) skewX(-10deg);
+            box-shadow: 0 3px 8px rgba(255, 215, 64, 0.2);
+        }
+        /* 机甲标题（突出“空间跃迁”核心特性） */
+        .mecha-main-title {
+            font-size: 1.8rem;
+            color: var(--metal-silver);
+            font-family: 'Orbitron', sans-serif;
+        }
+        .mecha-subtitle {
+            font-size: 0.95rem;
+            color: var(--faction2-accent);
+            margin-top: 0.3rem;
+        }
+
+        /* 2. 图片展示区（突出跃迁特效与机甲流线型设计） */
+        .mecha-gallery {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+        .mecha-main-img {
+            background-color: var(--armor-light);
+            padding: 2rem;
+            border: 1px solid var(--metal-dark);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(135deg, rgba(255,215,64,0.05) 0%, rgba(255,215,64,0.1) 100%); /* 淡金黄渐变背景，增强科技感 */
+        }
+        .mecha-main-img img {
+            max-width: 100%;
+            max-height: 380px;
+            object-fit: contain;
+            background-color: #0A121F; /* 深色背景凸显机甲与跃迁特效 */
+            padding: 1rem;
+            border-radius: 3px;
+        }
+        .mecha-thumbnails {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .mecha-thumb {
+            width: 120px;
+            height: 80px;
+            background-color: var(--armor-light);
+            border: 1px solid var(--metal-dark);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .mecha-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #0A121F;
+            padding: 0.5rem;
+        }
+        .mecha-thumb:hover, .mecha-thumb.active {
+            border-color: var(--faction2-accent);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255,215,64,0.15); /* hover时加金黄阴影，增强交互感 */
+        }
+
+        /* 3. 参数表（金黄高亮跃迁、能源、速度等核心属性） */
+        .mecha-params-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+        .section-heading {
+            font-size: 1.5rem;
+            color: var(--faction2-accent);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid rgba(255, 215, 64, 0.3);
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .params-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--armor-light);
+            background-image: linear-gradient(0deg, rgba(255,215,64,0.03) 0%, rgba(255,215,64,0.05) 100%);
+        }
+        .params-table th, .params-table td {
+            padding: 1rem 1.2rem;
+            border: 1px solid var(--metal-dark);
+            text-align: left;
+        }
+        .params-table th {
+            background-color: var(--armor-dark);
+            color: var(--faction2-accent);
+            font-weight: 700;
+            width: 25%;
+        }
+        .params-table td {
+            color: var(--metal-silver);
+            line-height: 1.6;
+        }
+        .param-highlight {
+            color: var(--faction2-accent);
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(255,215,64,0.2); /* 高亮文字加淡金黄阴影，突出重点 */
+        }
+
+        /* 4. 技能展示区（金黄主题，突出跃迁与突袭效果） */
+        .mecha-skills-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+        .skill-card {
+            background-color: var(--armor-light);
+            border: 1px solid var(--metal-dark);
+            border-radius: 3px;
+            overflow: hidden;
+            transition: all 0.3s;
+            background-image: linear-gradient(180deg, rgba(255,215,64,0.03) 0%, rgba(255,215,64,0.05) 100%);
+        }
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-color: rgba(255,215,64,0.5); /* hover时边框变金黄，增强科技感 */
+        }
+        .skill-img {
+            height: 220px;
+            background-color: var(--armor-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .skill-img img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .skill-content {
+            padding: 1.5rem;
+        }
+        .skill-name {
+            font-size: 1.2rem;
+            color: var(--faction2-accent);
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+        .skill-desc {
+            color: var(--metal-silver);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        .skill-meta {
+            font-size: 0.9rem;
+            color: var(--metal-dark);
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .skill-meta span {
+            color: var(--faction2-accent);
+            font-weight: 600;
+        }
+
+        /* 响应式适配（小屏幕优化） */
+        @media (max-width: 768px) {
+            .mecha-main-title {
+                font-size: 1.5rem;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            .params-table th, .params-table td {
+                padding: 0.8rem;
+            }
+            .params-table th {
+                width: 30%;
+            }
+            .mecha-thumb {
+                width: 100px;
+                height: 70px;
+            }
+        }
+        @media (max-width: 480px) {
+            .mecha-header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .section-heading {
+                font-size: 1.3rem;
+            }
+            .skill-img {
+                height: 180px;
+            }
+            .skill-meta {
+                gap: 1rem;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. 头部导航（返回阵营页+机甲标题） -->
+    <header class="mecha-header">
+        <div class="mecha-header-content">
+            <!-- 返回星核科技阵营页按钮（路径与阵营页文件同级） -->
+            <a href="sc-detail.html" class="back-to-faction">
+                <span>← 返回星核科技阵营</span>
+            </a>
+            <!-- 机甲标题与定位说明（突出“空间突袭”核心特性） -->
+            <div>
+                <h1 class="mecha-main-title">跃迁-VII型 MECHA</h1>
+                <p class="mecha-subtitle">空间突袭主力 | 星际战场跳跃者</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 机甲图片展示区（多视角+跃迁特效图） -->
+    <section class="mecha-gallery">
+        <!-- 主图：正面视角，展示跃迁引擎布局 -->
+        <div class="mecha-main-img">
+            <img src="../images/mecha/jump-front.jpg" alt="跃迁-VII型 正面图" id="mainMechaImg">
+        </div>
+        <!-- 缩略图：多视角+特效切换 -->
+        <div class="mecha-thumbnails">
+            <div class="mecha-thumb active" data-img="../images/mecha/jump-front.jpg">
+                <img src="../images/mecha/jump-front.jpg" alt="跃迁-VII型 正面图">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/jump-side.jpg">
+                <img src="../images/mecha/jump-side.jpg" alt="跃迁-VII型 侧面图">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/jump-back.jpg">
+                <img src="../images/mecha/jump-back.jpg" alt="跃迁-VII型 背部图（跃迁引擎特写）">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/jump-effect.jpg">
+                <img src="../images/mecha/jump-effect.jpg" alt="跃迁-VII型 跃迁启动特效">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/jump-weapon.jpg">
+                <img src="../images/mecha/jump-weapon.jpg" alt="跃迁-VII型 粒子炮细节">
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 机甲详细参数表（突出跃迁系统、能源、武器等核心属性） -->
+    <section class="mecha-params-section">
+        <h2 class="section-heading">MECHA PARAMETERS</h2>
+        <table class="params-table">
+            <tr>
+                <<<th>基础信息</</</th>
+                <td>跃迁-VII型（星核科技空间突袭机甲，星际纪元456年服役，搭载第二代短距跃迁引擎，替代初代跃迁-VI型）</td>
+            </tr>
+            <tr>
+                <<<th>机体高度</</</th>
+                <td>17.5米（机身呈流线型，减少跃迁时的空间阻力，宽度12.3米）</td>
+            </tr>
+            <tr>
+                <<<th>机体重量</</</th>
+                <td>空载 <span class="param-highlight">59.7吨</span> / 满载（武器+弹药+跃迁能源）<span class="param-highlight">65.2吨</span>（轻量化设计，适配高频次跃迁）</td>
+            </tr>
+            <tr>
+                <<<th>核心能源</</th>
+                <td>微型反物质引擎（功率1800kW，续航<span class="param-highlight">60小时</span>，跃迁时额外消耗反物质燃料，每次跃迁消耗0.5kg）</td>
+            </tr>
+            <tr>
+                <<<th>跃迁系统（核心优势）</</th>
+                <td>
+                    1. 第二代短距跃迁引擎（最大跳跃距离<span class="param-highlight">500米</span>，跃迁误差≤1米，避免撞墙/坠崖）<br>
+                    2. 空间稳定模块（跃迁过程中机体不受空间撕裂影响，驾驶员承受G力≤5G）<br>
+                    3. 跃迁冷却系统（连续跃迁最小间隔<span class="param-highlight">10秒</span>，避免引擎过热）
+                </td>
+            </tr>
+            <tr>
+                <<<th>动力系统</</th>
+                <td>4台矢量推进器（常规最大速度<span class="param-highlight">600km/h</span>，跃迁后3秒内可加速至最大速度）</td>
+            </tr>
+            <tr>
+                <<<th>防御系统</</th>
+                <td>
+                    1. 量子隐身屏障（跃迁后自动激活，持续<span class="param-highlight">15秒</span>，避免跃迁后立即被发现）<br>
+                    2. 轻量化复合装甲（厚度40-60mm，重点防护驾驶舱，兼顾防御与机动性）<br>
+                    3. 电磁干扰涂层（降低被雷达探测概率，隐身状态下探测规避率90%）
+                </td>
+            </tr>
+            <tr>
+                <<<th>武器配置</</th>
+                <td>
+                    1. 1门粒子炮（单发伤害<span class="param-highlight">1800点</span>，充能2秒，有效射程10km，适合跃迁后突袭）<br>
+                    2. 2枚微型巡航导弹（射程8km，命中率95%，可追踪移动目标，爆炸范围5米）<br>
+                    3. 1挺自卫机枪（12.7mm口径，射速800发/分钟，应对近距离步兵）
+                </td>
+            </tr>
+            <tr>
+                <<<th>电子设备</</th>
+                <td>
+                    1. 空间坐标探测器（精准计算跃迁落点，误差≤1米，避免跃迁事故）<br>
+                    2. 跃迁后瞄准系统（跃迁结束后0.5秒内锁定目标，减少突袭延迟）<br>
+                    3. 加密通讯器（与指挥中心实时同步跃迁计划，抗干扰等级SS级）
+                </td>
+            </tr>
+            <tr>
+                <<<th>操作配置</</th>
+                <td>1名驾驶员（需通过“空间适应测试”与“跃迁操作认证”，培训周期8个月，难度高于常规机甲）</td>
+            </tr>
+            <tr>
+                <<<th>制造成本</</th>
+                <td>单机<span class="param-highlight">2200万星际币</span>（跃迁引擎成本占比70%，非量产机型，仅配备精英突袭小队）</td>
+            </tr>
+            <tr>
+                <<<th>服役记录</</th>
+                <td>参与“星际海盗头目清除任务”“敌方指挥中心突袭战”等19次高危任务，成功率100%，无机甲损毁记录</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- 4. 机甲技能展示区（突出跃迁、突袭、隐身等核心能力） -->
+    <section class="mecha-skills-section">
+        <h2 class="section-heading">MECHA SKILLS</h2>
+        <div class="skills-grid">
+            <!-- 技能1：短距跃迁（核心突袭技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/jump-leap.jpg" alt="短距跃迁">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">短距跃迁（主动技能）</h3>
+                    <p class="skill-desc">激活跃迁引擎，向指定方向跳跃最大500米，跃迁过程中机体处于“空间无敌”状态（不受伤害），跃迁结束后自动激活15秒量子隐身屏障，避免被敌方立即锁定。连续跃迁最小间隔10秒。</p>
+                    <div class="skill-meta">
+                        <p>冷却时间：<span>10秒</span></p>
+                        <p>燃料消耗：<span>0.5kg/次</span></p>
+                        <p>跳跃距离：<span>最大500米</span></p>
+                        <p>隐身时长：<span>15秒（跃迁后）</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 技能2：粒子炮充能重击（核心攻击技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/jump-particle.jpg" alt="粒子炮充能重击">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">粒子炮充能重击（主动技能）</h3>
+                    <p class="skill-desc">给粒子炮充能2秒，发射一道高能量粒子束，对直线800米范围内的所有敌方单位造成1800点伤害，可穿透轻甲单位（如步兵机甲），对重甲单位伤害降低30%。充能期间机甲不可移动。</p>
+                    <div class="skill-meta">
+                        <p>冷却时间：<span>35秒</span></p>
+                        <p>能量消耗：<span>30%</span></p>
+                        <p>充能时间：<span>2秒</span></p>
+                        <p>攻击范围：<span>直线800米</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 技能3：跃迁规避（战术防御技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/jump-evade.jpg" alt="跃迁规避">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">跃迁规避（主动技能）</h3>
+                    <p class="skill-desc">当检测到敌方大额伤害（如敌方主炮、导弹）即将命中时，可主动触发“紧急跃迁”，向随机方向跳跃100-200米，规避伤害。该技能优先级高于常规跃迁，冷却时间更长，每天最多使用5次。</p>
+                    <div class="skill-meta">
+                        <p>冷却时间：<span>60秒</span></p>
+                        <p>燃料消耗：<span>0.3kg/次</span></p>
+                        <p>跳跃距离：<span>100-200米（随机）</span></p>
+                        <p>每日上限：<span>5次</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 技能4：空间感知（被动技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/jump-sense.jpg" alt="空间感知">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">空间感知（被动技能）</h3>
+                    <p class="skill-desc">机甲内置空间坐标探测器，实时扫描500米内的地形与敌方单位，在驾驶员显示屏上标记“安全跃迁落点”（绿色）与“危险落点”（红色），避免跃迁到墙体/敌方密集火力区，同时提前3秒预警敌方跃迁单位。</p>
+                    <div class="skill-meta">
+                        <p>扫描范围：<span>500米</span></p>
+                        <p>预警时间：<span>3秒（敌方跃迁）</span></p>
+                        <p>能量消耗：<span>0%（持续激活）</span></p>
+                        <p>功能：<span>标记落点+敌方预警</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 页脚（关联首页与阵营页） -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo mecha-title">MECHA FACTION ONLINE</div>
+            <div class="footer-links">
+                <a href="index.html#top">返回首页</a>
+                <a href="sc-detail.html">返回星核科技阵营</a>
+                <a href="index.html#mecha">查看更多机甲图鉴</a>
+                <a href="#">关于我们</a>
+                <a href="#">隐私政策</a>
+            </div>
+            <p class="footer-copyright">© 2025 MECHA FACTION ONLINE | 机甲设计与阵营设定均为虚构，仅供娱乐</p>
+        </div>
+    </footer>
+
+    <!-- 机甲页专属JS：图片切换与基础交互 -->
+    <script>
+        // 1. 图片切换功能（点击缩略图更新主图，带淡入效果）
+        const thumbnails = document.querySelectorAll('.mecha-thumb');
+        const mainImg = document.getElementById('mainMechaImg');
+        
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                thumbnails.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const targetImgSrc = this.getAttribute('data-img');
+                mainImg.setAttribute('src', targetImgSrc);
+                // 淡入动画
+                mainImg.style.opacity = '0';
+                setTimeout(() => {
+                    mainImg.style.opacity = '1';
+                }, 150);
+            });
+        });
+
+        // 2. 确保返回按钮点击有效（避免事件拦截）
+        document.querySelector('.back-to-faction').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>

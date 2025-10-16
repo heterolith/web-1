@@ -2,460 +2,158 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <!-- 适配移动端：确保页面在手机上显示正常 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>机甲档案库</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-        
-        body {
-            background-color: #ffffff;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 20px;
-            border-bottom: 2px solid #a8d8ff;
-        }
-        
-        h1 {
-            font-size: 36px;
-            color: #0066cc;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 1px 1px 3px rgba(0, 102, 204, 0.3);
-        }
-        
-        .subtitle {
-            color: #6699cc;
-            margin-top: 10px;
-            font-size: 18px;
-        }
-        
-        .mechs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-        
-        .mech-card {
-            background: linear-gradient(145deg, #f5f9ff, #ffffff #ffffff);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(168, 216, 255, 0.25);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            border: 1px solid #e1f0ff;
-        }
-        
-        .mech-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(100, 150, 220, 0.35);
-        }
-        
-        .mech-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background-color: #cfe5ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #0066cc;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        
-        .mech-info {
-            padding: 15px;
-        }
-        
-        .mech-name {
-            font-size: 18px;
-            font-weight: bold;
-            color: #004499;
-            margin-bottom: 5px;
-        }
-        
-        .mech-type {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        
-        /* 模态框样式 */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 51, 102, 0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            backdrop-filter: blur(2px);
-        }
-        
-        .modal-content {
-            background-color: white;
-            width: 90%;
-            max-width: 800px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 68, 153, 0.45);
-            position: relative;
-            animation: modalFadeIn 0.3s ease-out;
-        }
-        
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        
-        .close-btn {
-            position: absolute;
-            top: 18px;
-            right: 22px;
-            font-size: 28px;
-            color: #0066cc;
-            cursor: pointer;
-            z-index: 99;
-            font-weight: bold;
-            transition: color 0.2s ease;
-        }
-        
-        .close-btn:hover {
-            color: #003366;
-        }
-        
-        .modal-body {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .modal-image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            background-color: #b8dcff;
-        }
-        
-        .modal-details {
-            padding: 24px;
-        }
-        
-        .modal-title {
-            font-size: 26px;
-            color: #0055aa;
-            margin-bottom: 7px;
-            border-bottom: 1px solid #e1f0ff;
-            padding-bottom: 13px;
-        }
-        
-        .modal-subtitle {
-            color: #4477bb;
-            font-size: 17px;
-            margin-bottom: 19px;
-        }
-        
-        .specs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 21px;
-            margin-top: 23px;
-        }
-        
-        .spec-item {
-            background-color: #f0f7ff;
-            padding: 11px;
-            border-radius: 7px;
-            border-left: 3px solid #66aaff;
-        }
-        
-        .spec-label {
-            font-size: 13px;
-            color: #5588cc;
-            margin-bottom: 4px;
-        }
-        
-        .spec-value {
-            font-size: 16px;
-            color: #224477;
-            font-weight: bold;
-        }
-        
-        .description {
-            margin-top: 27px;
-            line-height: 1.65;
-            color: #444;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 60px;
-            padding: 29px;
-            color: #6688bb;
-            border-top: 1px solid #d0e7ff;
-        }
-
-        /* 响应式调整 */
-        @media (min-width: 768px) {
-            .modal-body {
-                flex-direction: row;
-            }
-            
-            .modal-image {
-                width: 42%;
-                height: auto;
-            }
-            
-            .modal-details {
-                width: 58%;
-            }
-        }
-    </style>
+    <title>机甲阵营网 - 星际机甲势力枢纽</title>
+    <!-- 引入外部字体（机甲风英文+中文，确保标题样式生效） -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- 关联CSS文件：先引公共样式（common.css），再引主页专属样式（index.css） -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/index.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>未来机甲档案库</h1>
-            <p class="subtitle">探索尖端战斗机械的设计与性能</p>
-        </header>
-        
-        <div class="mechs-grid">
-            <!-- 机甲1 -->
-            <div class="mech-card" data-id="1">
-                <div class="mech-img">雷霆战士MK-II</div>
-                <div class="mech-info">
-                    <div class="mech-name">雷霆战士MK-II</div>
-                    <div class="mech-type">重型突击型机甲</div>
-                </div>
+    <!-- 顶部锚点：用于导航“首页”链接跳转（点击后回到页面最顶部） -->
+    <div id="top"></div>
+
+    <!-- 下拉刷新弹窗：仅主页有，详情页无 -->
+    <div class="pull-refresh-popup" id="pullRefreshPopup">
+        <div class="pull-refresh-text">释放刷新</div>
+    </div>
+
+    <!-- 导航栏：仅主页有，详情页无 -->
+    <nav class="nav" id="nav">
+        <div class="container">
+            <!-- 导航Logo -->
+            <div class="nav-logo mecha-title">MECHA FACTION</div>
+            <!-- 导航菜单（桌面端显示，移动端隐藏） -->
+            <div class="nav-menu" id="navMenu">
+                <a href="#top">首页</a>
+                <a href="#factions">阵营库</a>
+                <a href="#mecha">机甲图鉴</a>
+                <a href="#community">玩家社区</a>
             </div>
-            
-            <!-- 机甲2 -->
-            <div class="mech-card" data-id="2">
-                <div class="mech-img">幻影猎手V3</div>
-                <div class="mech-info">
-                    <div class="mech-name">幻影猎手V3</div>
-                    <div class="mech-type">隐形侦察型机甲</div>
-                </div>
+            <!-- 汉堡按钮（移动端显示，桌面端隐藏） -->
+            <button class="menu-btn" id="menuBtn">☰</button>
+        </div>
+    </nav>
+
+    <!-- 英雄区：仅主页有，详情页无（展示项目核心主题） -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="mecha-title">INTERSTELLAR MECHA FACTIONS</h1>
+                <p>这里是星际机甲势力的核心枢纽——从<span>重型防御装甲</span>到<span>高速突袭机型</span>，从<span>铁血军团</span>到<span>神秘佣兵团</span>，自定义你的阵营标识，解锁机甲对战新维度。</p>
             </div>
-            
-            <!-- 机甲3 -->
-            <div class="mech-card" data-id="3">
-                <div class="mech-img">铁壁守护者</div>
-                <div class="mech-info">
-                    <div class="mech-name">铁壁守护者</div>
-                    <div class="mech-type">防御堡垒型机甲</div>
-                </div>
+        </div>
+    </section>
+
+    <!-- 阵营库：主页核心区域，点击按钮跳转至对应阵营详情页 -->
+    <section class="factions" id="factions">
+        <div class="container">
+            <!-- 阵营区标题栏（标题+渐变分隔线） -->
+            <div class="faction-header">
+                <h2 class="mecha-title">FACTIONS</h2>
+                <div class="faction-divider"></div>
             </div>
-            
-            <!-- 机甲4 -->
-            <div class="mech-card" data-id="4">
-                <div class="mech-img">风暴突击兵</div>
-                <div class="mech-info">
-                    <div class="mech-name">风暴突击兵</div>
-                    <div class="mech-type">高速机动型机甲</div>
+            <!-- 三大阵营卡片（桌面端3列，移动端1列） -->
+            <div class="faction-cards">
+                <!-- 1. 钢铁守卫军团卡片（跳转至sg-detail.html） -->
+                <div class="faction-card card1">
+                    <div class="faction-icon icon1">阵营1<br>机甲标识位</div>
+                    <h3>钢铁守卫军团</h3>
+                    <p class="faction-desc">
+                        以重型机甲为核心的防御阵营，配备量子护盾与合金装甲，擅长阵地坚守与团队协同作战，是星际防线的绝对屏障。
+                        <span>防御型 · 团队战</span>
+                    </p>
+                    <a href="sg-detail.html" class="faction-btn btn-steel">查看详情</a>
                 </div>
-            </div>
-            
-            <!-- 机甲5 -->
-            <div class="mech-card" data-id="5">
-                <div class="mech-img">深渊潜行者</div>
-                <div class="mech-info">
-                    <div class="mech-name">深渊潜行者</div>
-                    <div class="mech-type">两栖作战型机甲</div>
+                <!-- 2. 星核科技联盟卡片（跳转至sc-detail.html） -->
+                <div class="faction-card card2">
+                    <div class="faction-icon icon2">阵营2<br>机甲标识位</div>
+                    <h3>星核科技联盟</h3>
+                    <p class="faction-desc">
+                        掌握跃迁引擎与能量武器的科技阵营，机甲以高速、精准为核心，擅长远程突袭与敌后破坏，战术灵活多变。
+                        <span>科技型 · 突袭战</span>
+                    </p>
+                    <a href="sc-detail.html" class="faction-btn btn-star">查看详情</a>
                 </div>
-            </div>
-            
-            <!-- 机甲6 -->
-            <div class="mech-card" data-id="6">
-                <div class="mech-img">极光仲裁者</div>
-                <div class="mech-info">
-                    <div class="mech-name">极光仲裁者</div>
-                    <div class="mech-type">指挥控制型机甲</div>
+                <!-- 3. 暗影佣兵团卡片（跳转至sh-detail.html） -->
+                <div class="faction-card card3">
+                    <div class="faction-icon icon3">阵营3<br>机甲标识位</div>
+                    <h3>暗影佣兵团</h3>
+                    <p class="faction-desc">
+                        中立神秘的单兵作战阵营，机甲搭载隐形模块与多功能武器，承接各类星际任务，单兵作战能力极强。
+                        <span>隐匿型 · 单兵战</span>
+                    </p>
+                    <a href="sh-detail.html" class="faction-btn btn-shadow">查看详情</a>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- 模态框 -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <span class="close-btn" id="closeBtn">&times;</span>
-            <div class="modal-body">
-                <div class="modal-image" id="modalImage"></div>
-                <div class="modal-details">
-                    <h2 class="modal-title" id="modalTitle"></h2>
-                    <p class="modal-subtitle" id="modalSubtitle"></p>
-                    
-                    <div class="specs-grid">
-                        <div class="spec-item">
-                            <div class="spec-label">高度</div>
-                            <div class="spec-value" id="heightValue"></div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">重量</div>
-                            <div class="spec-value" id="weightValue"></div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">装甲类型</div>
-                            <div class="spec-value" id="armorValue"></div>
-                        </div>
-                        <div class="spec-item">
-                            <div class="spec-label">动力系统</div>
-                            <div class="spec-value" id="powerValue"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="description" id="descriptionText"></div>
+    <!-- 机甲图鉴：占位区域（后续可替换为真实机甲图片/参数） -->
+    <section class="mecha-section" id="mecha">
+        <div class="container">
+            <h2 class="mecha-title">MECHA ATLAS</h2>
+            <div class="mecha-placeholder">
+                <p>机甲图鉴内容占位：此处将展示三大阵营的机甲模型、参数、武器系统等详细信息，点击阵营卡片可跳转至对应机甲列表。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 功能区：展示项目核心功能（查询、模拟、招募、定制） -->
+    <section class="features">
+        <div class="container">
+            <h2 class="features-title mecha-title">MECHA SERVICES</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">▣</div>
+                    <h3>机甲数据查询</h3>
+                    <p>实时更新三大阵营机甲参数、武器系统与升级路线，精准对比机型性能。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">▢</div>
+                    <h3>对战模拟系统</h3>
+                    <p>自定义机甲配置，模拟不同阵营对战结果，生成最优战术建议。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">△</div>
+                    <h3>阵营招募平台</h3>
+                    <p>发布招募信息，组建专属机甲战队，参与跨服阵营赛与星际任务。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">◈</div>
+                    <h3>机甲定制工坊</h3>
+                    <p>根据阵营特性，自定义机甲外观、武器与模块，生成专属机甲蓝图。</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <footer>
-        <p>© 2025 未来机甲档案库 | 尖端科技研究中心</p>
+    <!-- 玩家社区：占位区域（后续可替换为真实社区内容/互动功能） -->
+    <section class="community-section" id="community">
+        <div class="container">
+            <h2 class="mecha-title">PLAYER COMMUNITY</h2>
+            <div class="community-placeholder">
+                <p>玩家社区内容占位：此处将展示玩家分享的机甲涂装、战术攻略、阵营赛事报名入口等，登录后可发布内容与其他玩家互动。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚：所有页面共用（样式在common.css中） -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo mecha-title">MECHA FACTION ONLINE</div>
+            <div class="footer-links">
+                <a href="#">关于我们</a>
+                <a href="#">隐私政策</a>
+                <a href="#">联系客服</a>
+            </div>
+            <p class="footer-copyright">© 2025 MECHA FACTION ONLINE | 机甲设计与阵营设定均为虚构，仅供娱乐</p>
+        </div>
     </footer>
 
-    <script>
-        // 机甲数据
-        const mechsData = {
-            1: {
-                title: "雷霆战士MK-II",
-                subtitle: "重型突击型机甲",
-                imageText: "雷霆战士MK-II",
-                height: "8.2米",
-                weight: "42吨",
-                armor: "复合钛合金装甲",
-                power: "核聚变反应堆",
-                description: "雷霆战士MK-II是战场上最具冲击力的重型机甲之一。装备有双联装等离子炮和背部导弹发射系统，能够在短时间内对敌方阵地实施毁灭性打击。其厚重的装甲能够承受绝大多数常规武器的攻击，是正面突破战场的理想选择。"
-            },
-            2: {
-                title: "幻影猎手V3",
-                subtitle: "隐形侦察型机甲",
-                imageText: "幻影猎手V3",
-                height: "6.5米",
-                weight: "28吨",
-                armor: "纳米隐身涂层",
-                power: "静音电力推进系统",
-                description: "幻影猎手V3专为隐秘行动设计，配备先进的主动伪装系统和热能屏蔽装置，能够在敌方眼皮底下执行侦察任务。其轻型武器系统虽不适用于正面交战，但在特种作战中表现出色。"
-            },
-            3: {
-                title: "铁壁守护者",
-                subtitle: "防御堡垒型机甲",
-                imageText: "铁壁守护者",
-                height: "9.5米",
-                weight: "55吨",
-                armor: "多层复合装甲板",
-                power: "重载动力核心",
-                description: "铁壁守护者是战场上的移动堡垒，拥有无与伦比的防御能力。其能量护盾发生器能够在短时间内抵御高强度火力攻击，同时为友军提供掩护。虽然移动速度较慢，但一旦部署到位，便成为难以逾越的防线。"
-            },
-            4: {
-                title: "风暴突击兵",
-                subtitle: "高速机动型机甲",
-                imageText: "风暴突击兵",
-                height: "7.1米",
-                weight: "32吨",
-                armor: "轻量化合金框架",
-                power: "涡轮增压引擎",
-                description: "风暴突击兵以其卓越的机动性和速度闻名。配备有跳跃喷射器和地形适应系统，能够迅速穿越复杂地形并发起闪电般的突袭。适合执行敌后破坏和快速打击任务。"
-            },
-            5: {
-                title: "深渊潜行者",
-                subtitle: "两栖作战型机甲",
-                imageText: "深渊潜行者",
-                height: "7.8米",
-                weight: "38吨",
-                armor: "防水耐压外壳",
-                power: "混合推进系统",
-                description: "深渊潜行者是一款专为水陆两栖作战设计的机甲。其密封式结构和推进装置使其能够在深水环境中自由行动，同时保持陆地上的战斗力。适用于海岸线防御和水下突袭任务。"
-            },
-            6: {
-                title: "极光仲裁者",
-                subtitle: "指挥控制型机甲",
-                imageText: "极光仲裁者",
-                height: "8.5米",
-                weight: "40吨",
-                armor: "模块化防护系统",
-                power: "高级能源矩阵",
-                description: "极光仲裁者并非传统意义上的战斗单位，而是战场上的神经中枢。它配备有先进的传感器阵列和通讯设备，能够协调多个单位的协同作战，并提供实时战术分析。"
-            }
-        };
-
-        // DOM元素
-        const modalOverlay = document.getElementById('modalOverlay');
-        const closeBtn = document.getElementById('closeBtn');
-        const modalImage = document.getElementById('modalImage');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalSubtitle = document.getElementById('modalSubtitle');
-        const heightValue = document.getElementById('heightValue');
-        const weightValue = document.getElementById('weightValue');
-        const armorValue = document.getElementById('armorValue');
-        const powerValue = document.getElementById('powerValue');
-        const descriptionText = document.getElementById('descriptionText');
-
-        // 显示模态框
-        function showModal(id) {
-            const data = mechsData[id];
-            if (!data) return;
-            
-            modalImage.textContent = data.imageText;
-            modalTitle.textContent = data.title;
-            modalSubtitle.textContent = data.subtitle;
-            heightValue.textContent = data.height;
-            weightValue.textContent = data.weight;
-            armorValue.textContent = data.armor;
-            powerValue.textContent = data.power;
-            descriptionText.textContent = data.description;
-            
-            modalOverlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // 防止背景滚动
-        }
-
-        // 隐藏模态框
-        function hideModal() {
-            modalOverlay.style.display = 'none';
-            document.body.style.overflow = ''; // 恢复滚动
-        }
-
-        // 事件监听
-        document.querySelectorAll('.mech-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const id = parseInt(card.getAttribute('data-id'));
-                showModal(id);
-            });
-        });
-
-        closeBtn.addEventListener('click', hideModal);
-
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) {
-                hideModal();
-            }
-        });
-
-        // ESC键关闭模态框
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                hideModal();
-            }
-        });
-    </script>
+    <!-- 关联主页专属JS文件（逻辑在index.js中，需放在页面底部，确保DOM加载完成后执行） -->
+    <script src="../js/index.js"></script>
 </body>
 </html>

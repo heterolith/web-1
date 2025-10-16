@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>钢铁守卫军团 - 机甲阵营详情</title>
+    <!-- 引入外部字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- 关联CSS文件：先公共（common.css），再专属（sg-detail.css） -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/sg-detail.css">
+    <style>
+        /* 新增：机甲详情按钮样式（平行四边形，与切换按钮一致） */
+        .mecha-view-btn {
+            /* 继承平行四边形样式，与机甲切换按钮统一 */
+            transform: skewX(-10deg);
+            background-color: rgba(255, 82, 82, 0.2);
+            border: 1px solid var(--faction1-accent);
+            color: var(--faction1-accent);
+            padding: 0.3rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: all 0.3s;
+            margin-left: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* 按钮内文字矫正（水平显示） */
+        .mecha-view-btn span {
+            transform: skewX(10deg);
+            display: inline-block;
+        }
+        /*  hover效果，与其他按钮统一 */
+        .mecha-view-btn:hover {
+            background-color: rgba(255, 82, 82, 0.3);
+            transform: translateY(-2px) skewX(-10deg);
+            box-shadow: 0 3px 8px rgba(255, 82, 82, 0.2);
+        }
+        /* 适配小屏幕：按钮换行显示 */
+        @media (max-width: 480px) {
+            .mecha-view-btn {
+                margin-left: 0;
+                margin-top: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. 钢铁守卫Banner（带由下向上动画） -->
+    <section class="faction-banner animate-from-bottom">
+        <div class="container">
+            <div class="banner-content">
+                <div class="banner-icon">
+                    <div class="icon-inner">SG</div>
+                </div>
+                <div class="banner-text">
+                    <h1 class="mecha-title">钢铁守卫军团</h1>
+                    <p class="faction-tag">DEFENSE FACTION · 星际防线核心力量</p>
+                    <p class="faction-slogan">「以钢为甲，以盾为魂，守星际万载安宁」</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 钢铁守卫核心内容区（带由下向上动画，延迟0.1秒） -->
+    <section class="faction-core animate-from-bottom">
+        <div class="container">
+            <!-- 2.1 阵营背景 -->
+            <div class="core-section">
+                <h2 class="section-title mecha-title">阵营背景</h2>
+                <div class="section-content">
+                    <p>钢铁守卫军团成立于星际纪元372年，由前星际联邦防御部长「凯伦·沃斯」创立，初衷是抵御「异星虫族」对人类殖民星球的侵袭。经过百年发展，已成为覆盖12个殖民星系的防御体系，拥有星际中最坚固的「量子护盾阵列」和「合金堡垒群」。</p>
+                    <p>军团信条是「防御即进攻」，不主动挑起冲突，但任何对其守护区域的侵犯，都会遭到雷霆反击。目前军团总部位于「阿尔法-7号堡垒」，常年驻守兵力超5000人，核心机甲部队「铁壁小队」更是星际中无人敢轻易招惹的防御力量。近年因星际海盗活动加剧，军团还承担了殖民星球护航任务，与星核科技联盟建立了临时合作关系。</p>
+                </div>
+            </div>
+
+            <!-- 2.2 核心机甲（查看详情按钮改为平行四边形，放在名称后方） -->
+            <div class="core-section">
+                <h2 class="section-title mecha-title">核心机甲</h2>
+                <div class="mecha-switcher">
+                    <button class="mecha-btn active" data-mecha="iron-wall"><span>铁壁-III型</span></button>
+                    <button class="mecha-btn" data-mecha="heavy-shield"><span>重盾-V型</span></button>
+                    <button class="mecha-btn" data-mecha="fortress"><span>堡垒-X型</span></button>
+                </div>
+                <div class="mecha-detail">
+                    <!-- 铁壁-III型（默认显示） -->
+                    <div class="mecha-info active" id="iron-wall">
+                        <div class="mecha-img">
+                            <div class="img-placeholder">
+                                <span>铁壁-III型 机甲示意图<br>（常规防御主力机型）</span>
+                            </div>
+                        </div>
+                        <div class="mecha-params">
+                            <!-- 机甲名称 + 平行四边形查看按钮 -->
+                            <h3 style="display: flex; align-items: center; flex-wrap: wrap;">
+                                铁壁-III型（常规防御主力）
+                                <a href="mecha-iron-wall.html" class="mecha-view-btn">
+                                    <span>查看详情</span>
+                                </a>
+                            </h3>
+                            <ul class="params-list">
+                                <li><span class="param-name">机体高度</span>：18.7米</li>
+                                <li><span class="param-name">机体重量</span>：89.5吨</li>
+                                <li><span class="param-name">核心能源</span>：微型核聚变反应堆（续航72小时）</li>
+                                <li><span class="param-name">防御系统</span>：双层量子护盾（抗打击强度：S级）+ 钛合金复合装甲</li>
+                                <li><span class="param-name">武器配置</span>：2门120mm防御火炮（可切换穿甲弹/高爆弹）、1具电磁脉冲发射器（范围干扰敌方电子设备）</li>
+                                <li><span class="param-name">作战定位</span>：阵地防御、小队掩护、正面抗线</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 重盾-V型（默认隐藏） -->
+                    <div class="mecha-info" id="heavy-shield">
+                        <div class="mecha-img">
+                            <div class="img-placeholder">
+                                <span>重盾-V型 机甲示意图<br>（重点区域防御机型）</span>
+                            </div>
+                        </div>
+                        <div class="mecha-params">
+                            <h3 style="display: flex; align-items: center; flex-wrap: wrap;">
+                                重盾-V型（重点区域防御）
+                                <a href="mecha-heavy-shield.html" class="mecha-view-btn">
+                                    <span>查看详情</span>
+                                </a>
+                            </h3>
+                            <ul class="params-list">
+                                <li><span class="param-name">机体高度</span>：21.3米</li>
+                                <li><span class="param-name">机体重量</span>：127.8吨</li>
+                                <li><span class="param-name">核心能源</span>：大型核聚变反应堆（续航120小时）</li>
+                                <li><span class="param-name">防御系统</span>：三段式能量护盾（可展开360°无死角防御）+ 超合金装甲（抗穿深：800mm）</li>
+                                <li><span class="param-name">武器配置</span>：1门203mm要塞炮（对舰/对地双模式）、2具近防机枪（拦截敌方导弹）</li>
+                                <li><span class="param-name">作战定位</span>：堡垒守卫、舰队护航、重要目标防御</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 堡垒-X型（默认隐藏） -->
+                    <div class="mecha-info" id="fortress">
+                        <div class="mecha-img">
+                            <div class="img-placeholder">
+                                <span>堡垒-X型 机甲示意图<br>（战略级防御机型）</span>
+                            </div>
+                        </div>
+                        <div class="mecha-params">
+                            <h3 style="display: flex; align-items: center; flex-wrap: wrap;">
+                                堡垒-X型（战略级防御）
+                                <a href="mecha-fortress.html" class="mecha-view-btn">
+                                    <span>查看详情</span>
+                                </a>
+                            </h3>
+                            <ul class="params-list">
+                                <li><span class="param-name">机体高度</span>：35.5米</li>
+                                <li><span class="param-name">机体重量</span>：386吨（需轨道空投部署）</li>
+                                <li><span class="param-name">核心能源</span>：小型反物质反应堆（续航30天）</li>
+                                <li><span class="param-name">防御系统</span>：量子屏障阵列（可覆盖10公里范围）+ 纳米修复装甲（受损后自动修复）</li>
+                                <li><span class="param-name">武器配置</span>：2门406mm超重炮（战略级打击）、4具防空导弹发射井、1座等离子炮塔（反机甲专用）</li>
+                                <li><span class="param-name">作战定位</span>：星球防御、战略据点驻守、对抗大规模入侵</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.3 战术体系 -->
+            <div class="core-section">
+                <h2 class="section-title mecha-title">战术体系</h2>
+                <div class="tactics-content">
+                    <div class="tactics-item">
+                        <h3 class="tactics-name">「铁壁阵」（基础防御阵型）</h3>
+                        <p class="tactics-desc">3-5台铁壁-III型机甲横向排列，展开量子护盾形成连续防御线，重盾-V型机甲在关键点位（如堡垒入口、能源站）加强，有效阻挡敌方正面进攻，为后方支援部队（如医疗机甲、弹药补给机甲）争取部署时间。该战术在「卡伦星系防御战」中曾抵御虫族10万兵力围攻72小时。</p>
+                    </div>
+                    <div class="tactics-item">
+                        <h3 class="tactics-name">「堡垒封锁」（区域控制战术）</h3>
+                        <p class="tactics-desc">以堡垒-X型机甲为核心，搭配2-3台重盾-V型，展开大范围量子屏障封锁敌方进攻路线，同时利用要塞炮对敌方集群目标进行覆盖打击，近防机枪拦截导弹。适合守护狭窄通道（如星际跃迁点、小行星带）或登陆点，在「阿尔法-7号堡垒保卫战」中成功阻挡海盗舰队3次登陆。</p>
+                    </div>
+                    <div class="tactics-item">
+                        <h3 class="tactics-name">「反冲锋」（防御反击战术）</h3>
+                        <p class="tactics-desc">先以密集防御（铁壁阵+量子护盾）消耗敌方火力与能源，待敌方攻势减弱后，铁壁-III型机甲掩护重盾-V型突破敌方阵线，堡垒-X型提供远程火力支援（重点打击敌方指挥舰/机甲），将防御优势转化为局部进攻机会。该战术曾在「奥尔特云护航任务」中反杀3倍兵力的海盗部队。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.4 招募要求 -->
+            <div class="core-section">
+                <h2 class="section-title mecha-title">招募要求</h2>
+                <div class="recruit-content">
+                    <ul class="recruit-list">
+                        <li>1. 星际联邦公民，无犯罪记录，年龄18-35周岁，身体无重大疾病（需通过联邦医疗认证）；</li>
+                        <li>2. 体能测试达到B级以上（重点考核耐力、抗压力、空间感知能力），机甲操作基础测试合格；</li>
+                        <li>3. 持有机甲操作证书（防御型机甲操作经验优先，无证书者需通过3个月基础培训并考核合格）；</li>
+                        <li>4. 认同「防御即责任」的军团理念，能适应长期驻守任务（单次驻守周期最长12个月），服从指挥；</li>
+                        <li>5. 特殊技能优先（如量子护盾系统维护、核聚变反应堆调试、战术指挥、多语言沟通能力等）。</li>
+                    </ul>
+                    <div class="recruit-btn">
+                        <a href="index.html#community" class="btn-primary">前往玩家社区报名</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 页脚（所有页面共用） -->
+    <footer class="footer animate-from-bottom">
+        <div class="footer-content">
+            <div class="footer-logo mecha-title">MECHA FACTION ONLINE</div>
+            <div class="footer-links">
+                <a href="index.html#top">返回首页</a>
+                <a href="#">关于我们</a>
+                <a href="#">隐私政策</a>
+                <a href="#">联系客服</a>
+            </div>
+            <p class="footer-copyright">© 2025 MECHA FACTION ONLINE | 机甲设计与阵营设定均为虚构，仅供娱乐</p>
+        </div>
+    </footer>
+
+    <!-- 关联钢铁守卫专属JS -->
+    <script src="../js/sg-detail.js"></script>
+    <script>
+        // 确保查看详情按钮点击有效，不被其他事件拦截
+        document.querySelectorAll('.mecha-view-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                window.location.href = this.getAttribute('href');
+            });
+        });
+    </script>
+</body>
+</html>
