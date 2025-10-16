@@ -1,0 +1,121 @@
+/* 1. 基础重置：清除默认样式，统一盒模型 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 2. 全局变量：定义通用颜色、动画时长（所有页面可直接调用） */
+:root {
+    /* 基础配色（机甲风深色系） */
+    --armor-dark: #0A121F;    /* 背景深色 */
+    --armor-light: #14233C;   /* 卡片/模块浅色 */
+    --energy-blue: #22AED1;   /* 强调色-蓝色（科技感） */
+    --energy-green: #39E581;  /* 强调色-绿色（高亮文本） */
+    --metal-silver: #C8D8E4;  /* 常规文本色 */
+    --metal-dark: #5A6A7A;    /* 次要文本/边框色 */
+    /* 动画配置 */
+    --animate-duration: 0.3s; /* 统一进入动画时长（0.3秒） */
+    /* 三大阵营专属色（所有页面通用，避免重复定义） */
+    --faction1-accent: #FF5252; /* 钢铁守卫-赤红 */
+    --faction2-accent: #FFD740; /* 星核科技-金黄 */
+    --faction3-accent: #AB47BC; /* 暗影佣兵团-紫黑 */
+}
+
+/* 3. 全局样式：统一页面基础外观 */
+body {
+    background-color: var(--armor-dark);
+    color: var(--metal-silver);
+    font-family: 'Noto Sans SC', sans-serif; /* 中文主体字体 */
+    line-height: 1.6;
+    scroll-behavior: smooth; /* 平滑滚动 */
+    overscroll-behavior-y: none; /* 禁止页面下拉反弹 */
+}
+
+/* 4. 通用类：机甲风标题字体（所有页面的标题都能用） */
+.mecha-title {
+    font-family: 'Orbitron', sans-serif; /* 英文科技感字体 */
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+/* 5. 通用容器：统一内容宽度，居中显示（所有页面的内容区都能用） */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px; /* 左右留边距，适配小屏幕 */
+}
+
+/* 6. 通用动画：阵营详情页“由下向上”进入动画（所有详情页共用） */
+.animate-from-bottom {
+    opacity: 0; /* 初始透明 */
+    transform: translateY(50px); /* 初始在屏幕底部 */
+    transition: 
+        opacity var(--animate-duration) ease,
+        transform var(--animate-duration) ease;
+}
+.animate-from-bottom.active {
+    opacity: 1; /* 动画后显示 */
+    transform: translateY(0); /* 动画后回到正常位置 */
+}
+
+/* 7. 通用页脚：所有页面的页脚样式统一（不用重复写） */
+.footer {
+    background-color: var(--armor-dark);
+    padding: 3rem 0;
+    border-top: 2px solid var(--energy-blue); /* 顶部蓝色边框 */
+    margin-top: 3rem;
+}
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* 小屏幕自动换行 */
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.footer-logo {
+    font-size: 1.2rem;
+    color: var(--energy-green);
+    font-family: 'Orbitron', sans-serif;
+}
+.footer-links {
+    display: flex;
+    gap: 1.5rem;
+}
+.footer-links a {
+    color: var(--metal-dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.footer-links a:hover {
+    color: var(--energy-blue); /* hover时变蓝色 */
+}
+.footer-copyright {
+    width: 100%; /* 独占一行 */
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--metal-dark);
+}
+
+/* 8. 通用响应式：小屏幕基础适配（所有页面共用） */
+@media (max-width: 768px) {
+    .mecha-title {
+        font-size: 1.5rem !important; /* 标题缩小 */
+    }
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center; /* 页脚链接居中 */
+    }
+}
+@media (max-width: 480px) {
+    body {
+        font-size: 0.95rem; /* 整体文本缩小 */
+    }
+    .footer-logo {
+        font-size: 1rem; /* 页脚logo缩小 */
+    }
+}

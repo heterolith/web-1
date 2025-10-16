@@ -1,0 +1,304 @@
+/* 1. 星核科技详情页专属Banner样式（金黄主题） */
+.faction-banner {
+    background: linear-gradient(rgba(10, 18, 31, 0.95), rgba(10, 18, 31, 0.95)), url("星核科技背景.jpg");
+    background-size: cover;
+    background-position: center;
+    padding: 5rem 0;
+    border-bottom: 3px solid var(--faction2-accent); /* 金黄边框（星核专属） */
+    margin-bottom: 3rem;
+}
+.banner-content {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.banner-icon {
+    width: 130px;
+    height: 130px;
+    border: 3px solid var(--faction2-accent); /* 金黄边框 */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 215, 64, 0.1); /* 金黄透明背景 */
+}
+.icon-inner {
+    font-size: 2.8rem;
+    color: var(--faction2-accent); /* 金黄文字 */
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 800;
+}
+.banner-text h1 {
+    font-size: 2.5rem;
+    color: var(--metal-silver);
+    margin-bottom: 0.8rem;
+}
+.faction-tag {
+    font-size: 1rem;
+    color: var(--faction2-accent); /* 金黄文字 */
+    margin-bottom: 1rem;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+}
+.faction-slogan {
+    font-size: 1.2rem;
+    color: var(--metal-silver);
+    font-style: italic;
+    line-height: 1.8;
+}
+
+/* 2. 星核科技详情页核心内容区样式 */
+.faction-core {
+    padding: 0 0 5rem;
+    transition-delay: 0.1s; /* 动画延迟0.1秒 */
+}
+.core-section {
+    margin-bottom: 4rem;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.section-title {
+    font-size: 1.8rem;
+    color: var(--faction2-accent); /* 金黄标题 */
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 2px solid rgba(255, 215, 64, 0.3); /* 金黄透明下划线 */
+    display: inline-block;
+}
+.section-content {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: var(--metal-silver);
+    text-indent: 2em;
+}
+.section-content p {
+    margin-bottom: 1.5rem;
+}
+
+/* 3. 核心机甲切换区样式（星核科技专属，已改平行四边形按钮） */
+.mecha-switcher {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+/* 单个切换按钮（已加平行四边形样式） */
+.mecha-btn {
+    background-color: var(--armor-dark);
+    border: 1px solid var(--metal-dark);
+    color: var(--metal-silver);
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 3px;
+    /* 关键：按钮变平行四边形 */
+    transform: skewX(-10deg);
+    /* 关键：让按钮内文字居中 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+/* 按钮激活状态（金黄主题，保持平行四边形） */
+.mecha-btn.active {
+    background-color: rgba(255, 215, 64, 0.2);
+    border-color: var(--faction2-accent);
+    color: var(--faction2-accent);
+}
+/* 按钮hover状态（保持平行四边形） */
+.mecha-btn:hover {
+    border-color: var(--faction2-accent);
+    color: var(--faction2-accent);
+    transform: translateY(-2px) skewX(-10deg); /* hover时上浮且保持平行四边形 */
+}
+/* 关键：矫正按钮内文字，使其水平（抵消按钮倾斜） */
+.mecha-btn span {
+    transform: skewX(10deg);
+    display: inline-block;
+}
+.mecha-detail {
+    background-color: var(--armor-dark);
+    padding: 2rem;
+    border: 1px solid var(--metal-dark);
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+.mecha-info {
+    display: none;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.mecha-info.active {
+    display: flex;
+}
+.mecha-img {
+    flex: 1;
+    min-width: 320px;
+}
+.img-placeholder {
+    width: 100%;
+    height: 320px;
+    background-color: var(--armor-light);
+    border: 1px solid var(--metal-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--metal-dark);
+    font-size: 1rem;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 2px;
+}
+.mecha-params {
+    flex: 1;
+    min-width: 320px;
+}
+/* 机甲参数标题（金黄颜色） */
+.mecha-params h3 {
+    font-size: 1.4rem;
+    color: var(--faction2-accent);
+    margin-bottom: 1.2rem;
+    font-family: 'Orbitron', sans-serif;
+}
+.params-list {
+    list-style: none;
+}
+.params-list li {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--metal-silver);
+    line-height: 1.6;
+}
+/* 参数名称（金黄颜色） */
+.param-name {
+    color: var(--faction2-accent);
+    font-weight: 700;
+    display: inline-block;
+    width: 130px;
+}
+
+/* 4. 战术体系区域样式（星核科技专属） */
+.tactics-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+/* 战术卡片（金黄左侧边框） */
+.tactics-item {
+    background-color: var(--armor-dark);
+    padding: 1.8rem;
+    border-left: 4px solid var(--faction2-accent); /* 金黄左侧线 */
+    border-radius: 3px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+}
+.tactics-item:hover {
+    transform: translateY(-5px);
+}
+/* 战术名称（金黄颜色） */
+.tactics-name {
+    font-size: 1.2rem;
+    color: var(--faction2-accent);
+    margin-bottom: 0.8rem;
+}
+.tactics-desc {
+    font-size: 1rem;
+    color: var(--metal-silver);
+    line-height: 1.8;
+}
+
+/* 5. 招募要求区域样式（星核科技专属） */
+.recruit-list {
+    list-style: decimal inside;
+    font-size: 1rem;
+    color: var(--metal-silver);
+    margin-bottom: 2rem;
+}
+.recruit-list li {
+    margin-bottom: 1.2rem;
+    line-height: 1.8;
+    padding-left: 0.5rem;
+}
+.recruit-btn {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+/* 报名按钮（金黄主题） */
+.btn-primary {
+    display: inline-block;
+    background-color: rgba(255, 215, 64, 0.2);
+    border: 1px solid var(--faction2-accent);
+    color: var(--faction2-accent);
+    padding: 0.8rem 2rem;
+    text-decoration: none;
+    font-size: 1.1rem;
+    border-radius: 3px;
+    transition: all 0.3s;
+    font-weight: 700;
+}
+/* 按钮hover状态 */
+.btn-primary:hover {
+    background-color: rgba(255, 215, 64, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 215, 64, 0.2); /* 金黄阴影 */
+}
+
+/* 6. 星核科技详情页响应式适配 */
+@media (max-width: 768px) {
+    .banner-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+    .banner-icon {
+        width: 110px;
+        height: 110px;
+    }
+    .icon-inner {
+        font-size: 2.2rem;
+    }
+    .banner-text h1 {
+        font-size: 2rem;
+    }
+    .param-name {
+        width: 110px;
+        font-size: 0.95rem;
+    }
+    .core-section {
+        margin-bottom: 3rem;
+    }
+    .tactics-content {
+        gap: 1.5rem;
+    }
+}
+@media (max-width: 480px) {
+    .faction-banner {
+        padding: 3.5rem 0;
+    }
+    .banner-text h1 {
+        font-size: 1.8rem;
+    }
+    .faction-tag {
+        font-size: 0.9rem;
+    }
+    .section-title {
+        font-size: 1.5rem;
+    }
+    .mecha-info {
+        gap: 1.5rem;
+    }
+    .mecha-img, .mecha-params {
+        min-width: 100%;
+    }
+    .img-placeholder {
+        height: 280px;
+    }
+    .btn-primary {
+        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+    }
+}
