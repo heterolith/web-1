@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>堡垒-X型 - 钢铁守卫机甲详情</title>
+    <!-- 引入外部字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- 关联CSS：公共样式+钢铁守卫专属样式（赤红主题，突出战略级防御定位） -->
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="sg-detail.css">
+    <style>
+        /* 机甲详情页专属样式：钢铁守卫赤红主题，适配战略级防御定位 */
+        /* 1. 头部导航（返回阵营页+标题） */
+        .mecha-header {
+            background-color: var(--armor-dark);
+            padding: 1.5rem 0;
+            border-bottom: 2px solid var(--faction1-accent); /* 赤红边框，强化钢铁守卫防御属性 */
+            margin-bottom: 3rem;
+        }
+        .mecha-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        /* 返回按钮（平行四边形，赤红主题，与阵营页统一） */
+        .back-to-faction {
+            transform: skewX(-10deg);
+            background-color: rgba(255, 82, 82, 0.2);
+            border: 1px solid var(--faction1-accent);
+            color: var(--faction1-accent);
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-to-faction span {
+            transform: skewX(10deg);
+            display: inline-block;
+        }
+        .back-to-faction:hover {
+            background-color: rgba(255, 82, 82, 0.3);
+            transform: translateY(-2px) skewX(-10deg);
+            box-shadow: 0 3px 8px rgba(255, 82, 82, 0.2);
+        }
+        /* 机甲标题（突出“战略级防御”核心定位） */
+        .mecha-main-title {
+            font-size: 1.8rem;
+            color: var(--metal-silver);
+            font-family: 'Orbitron', sans-serif;
+        }
+        .mecha-subtitle {
+            font-size: 0.95rem;
+            color: var(--faction1-accent);
+            margin-top: 0.3rem;
+        }
+
+        /* 2. 图片展示区（突出巨型装甲、量子屏障、超重炮，体现战略级质感） */
+        .mecha-gallery {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+        .mecha-main-img {
+            background-color: var(--armor-light);
+            padding: 2rem;
+            border: 1px solid var(--metal-dark);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(135deg, rgba(255,82,82,0.05) 0%, rgba(255,82,82,0.1) 100%); /* 淡赤红渐变背景，增强厚重感 */
+        }
+        .mecha-main-img img {
+            max-width: 100%;
+            max-height: 380px;
+            object-fit: contain;
+            background-color: #0A121F; /* 深色背景凸显机甲巨型结构 */
+            padding: 1rem;
+            border-radius: 3px;
+        }
+        .mecha-thumbnails {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .mecha-thumb {
+            width: 120px;
+            height: 80px;
+            background-color: var(--armor-light);
+            border: 1px solid var(--metal-dark);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .mecha-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #0A121F;
+            padding: 0.5rem;
+        }
+        .mecha-thumb:hover, .mecha-thumb.active {
+            border-color: var(--faction1-accent);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255,82,82,0.15); /* hover加赤红阴影，增强战略级氛围 */
+        }
+
+        /* 3. 参数表（赤红高亮防御范围、能源、武器等战略级属性） */
+        .mecha-params-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+        .section-heading {
+            font-size: 1.5rem;
+            color: var(--faction1-accent);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid rgba(255, 82, 82, 0.3);
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .params-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--armor-light);
+            background-image: linear-gradient(0deg, rgba(255,82,82,0.03) 0%, rgba(255,82,82,0.05) 100%);
+        }
+        .params-table th, .params-table td {
+            padding: 1rem 1.2rem;
+            border: 1px solid var(--metal-dark);
+            text-align: left;
+        }
+        .params-table th {
+            background-color: var(--armor-dark);
+            color: var(--faction1-accent);
+            font-weight: 700;
+            width: 25%;
+        }
+        .params-table td {
+            color: var(--metal-silver);
+            line-height: 1.6;
+        }
+        .param-highlight {
+            color: var(--faction1-accent);
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(255,82,82,0.2); /* 高亮文字加淡赤红阴影，突出战略级重点 */
+        }
+
+        /* 4. 技能展示区（赤红主题，突出大范围防御、战略打击能力） */
+        .mecha-skills-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+        .skill-card {
+            background-color: var(--armor-light);
+            border: 1px solid var(--metal-dark);
+            border-radius: 3px;
+            overflow: hidden;
+            transition: all 0.3s;
+            background-image: linear-gradient(180deg, rgba(255,82,82,0.03) 0%, rgba(255,82,82,0.05) 100%);
+        }
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-color: rgba(255,82,82,0.5); /* hover时边框变赤红，强化战略级质感 */
+        }
+        .skill-img {
+            height: 220px;
+            background-color: var(--armor-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .skill-img img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .skill-content {
+            padding: 1.5rem;
+        }
+        .skill-name {
+            font-size: 1.2rem;
+            color: var(--faction1-accent);
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+        .skill-desc {
+            color: var(--metal-silver);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        .skill-meta {
+            font-size: 0.9rem;
+            color: var(--metal-dark);
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .skill-meta span {
+            color: var(--faction1-accent);
+            font-weight: 600;
+        }
+
+        /* 响应式适配（小屏幕优化战略级机甲展示） */
+        @media (max-width: 768px) {
+            .mecha-main-title {
+                font-size: 1.5rem;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            .params-table th, .params-table td {
+                padding: 0.8rem;
+            }
+            .params-table th {
+                width: 30%;
+            }
+            .mecha-thumb {
+                width: 100px;
+                height: 70px;
+            }
+        }
+        @media (max-width: 480px) {
+            .mecha-header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .section-heading {
+                font-size: 1.3rem;
+            }
+            .skill-img {
+                height: 180px;
+            }
+            .skill-meta {
+                gap: 1rem;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. 头部导航（返回阵营页+机甲标题） -->
+    <header class="mecha-header">
+        <div class="mecha-header-content">
+            <!-- 返回钢铁守卫阵营页按钮（路径与阵营页文件同级） -->
+            <a href="sg-detail.html" class="back-to-faction">
+                <span>← 返回钢铁守卫阵营</span>
+            </a>
+            <!-- 机甲标题与定位说明（突出“战略级防御”核心特性） -->
+            <div>
+                <h1 class="mecha-main-title">堡垒-X型 MECHA</h1>
+                <p class="mecha-subtitle">战略级防御主力 | 星际星球守护者</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 机甲图片展示区（多视角+量子屏障+超重炮特写） -->
+    <section class="mecha-gallery">
+        <!-- 主图：正面视角，展示巨型装甲与量子屏障范围 -->
+        <div class="mecha-main-img">
+            <img src="../images/mecha/fortress-front.jpg" alt="堡垒-X型 正面图" id="mainMechaImg">
+        </div>
+        <!-- 缩略图：多视角+战略级细节切换 -->
+        <div class="mecha-thumbnails">
+            <div class="mecha-thumb active" data-img="../images/mecha/fortress-front.jpg">
+                <img src="../images/mecha/fortress-front.jpg" alt="堡垒-X型 正面图（量子屏障展开）">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/fortress-side.jpg">
+                <img src="../images/mecha/fortress-side.jpg" alt="堡垒-X型 侧面图（超重炮特写）">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/fortress-back.jpg">
+                <img src="../images/mecha/fortress-back.jpg" alt="堡垒-X型 背部图（能源核心）">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/fortress-shield.jpg">
+                <img src="../images/mecha/fortress-shield.jpg" alt="堡垒-X型 量子屏障覆盖范围">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/fortress-cannon.jpg">
+                <img src="../images/mecha/fortress-cannon.jpg" alt="堡垒-X型 406mm超重炮细节">
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 机甲详细参数表（突出战略级防御、能源、武器等核心属性） -->
+    <section class="mecha-params-section">
+        <h2 class="section-heading">MECHA PARAMETERS</h2>
+        <table class="params-table">
+            <tr>
+                <<<<th>基础信息</</</th>
+                <td>堡垒-X型（钢铁守卫战略级防御机甲，星际纪元454年服役，专为星球防御、战略据点驻守设计，需轨道空投部署）</td>
+            </tr>
+            <tr>
+                <<<<th>机体高度</</</th>
+                <td>35.5米（含顶部防空导弹发射井，不含发射井32.8米，机身宽28.6米，呈堡垒式结构）</td>
+            </tr>
+            <tr>
+                <<<<th>机体重量</</th>
+                <td>空载 <span class="param-highlight">386吨</span> / 满载（武器+弹药+屏障能源）<span class="param-highlight">452吨</span>（超重型战略机甲，无法自行移动，需轨道空投后固定部署）</td>
+            </tr>
+            <tr>
+                <<<<th>核心能源（战略级配置）</</th>
+                <td>小型反物质反应堆（功率5000kW，续航<span class="param-highlight">30天</span>，支持外接星球能源站无限续航，反物质燃料需每月补充1次）</td>
+            </tr>
+            <tr>
+                <<<<th>防御系统（核心优势）</</th>
+                <td>
+                    1. 量子屏障阵列（可覆盖<span class="param-highlight">10公里范围</span>，屏障抗打击强度SSS级，可同时保护友军堡垒/舰队）<br>
+                    2. 纳米修复装甲（受损后每秒修复<span class="param-highlight">2%装甲值</span>，无战斗时修复速度提升至5%，支持战场快速恢复）<br>
+                    3. 分层防御模块（将10公里范围分为3层屏障，外层破碎不影响内层，保障核心区域安全）
+                </td>
+            </tr>
+            <tr>
+                <<<<th>武器配置（战略级火力）</</th>
+                <td>
+                    1. 2门406mm超重炮（战略级打击武器，射速1发/3分钟，穿甲深度<span class="param-highlight">3000mm</span>，有效射程50km，可打击敌方战舰/巨型机甲）<br>
+                    2. 4具防空导弹发射井（每具备弹12枚，射程30km，拦截敌方战机/导弹，命中率98%）<br>
+                    3. 1座等离子炮塔（反机甲专用，射速5发/分钟，有效射程15km，对机甲单位伤害提升50%）<br>
+                    4. 8挺近防机枪（12.7mm口径，形成密集防空/防步兵火力网，有效射程3km）
+                </td>
+            </tr>
+            <tr>
+                <<<<th>电子设备（战略级侦查）</</th>
+                <td>
+                    1. 远程战略雷达（探测范围<span class="param-highlight">200公里</span>，可同时追踪100个空中/地面目标，预警时间≥5分钟）<br>
+                    2. 战场指挥系统（可指挥50台以下常规机甲，共享雷达数据，协调防御战术）<br>
+                    3. 量子通讯模块（与星际联邦总部直接通讯，抗干扰等级SSS级，不被敌方破解）
+                </td>
+            </tr>
+            <tr>
+                <<<<th>部署方式</</th>
+                <td>轨道空投（由重型运输舰将机甲送至目标星球轨道，通过缓冲舱降落至指定防御点，部署时间<span class="param-highlight">30分钟</span>，部署后不可移动）</td>
+            </tr>
+            <tr>
+                <<<<th>操作配置</</th>
+                <td>1名指挥官 + 3名驾驶员 + 2名武器操作员 + 2名能源维护员（共8人团队，分工负责指挥、防御、火力、能源）</td>
+            </tr>
+            <tr>
+                <<<<th>制造成本</</th>
+                <td>单机<span class="param-highlight">1.5亿星际币</span>（约合联邦币45亿，反物质反应堆与量子屏障阵列成本占比80%，目前仅部署12台）</td>
+            </tr>
+            <tr>
+                <<<<th>服役记录</</th>
+                <td>参与“贝塔星球防御战”“星际虫族大规模入侵拦截战”，成功抵御敌方10万兵力+500台机甲进攻，未让敌方突破防御圈</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- 4. 机甲技能展示区（突出战略级防御、大范围打击能力） -->
+    <section class="mecha-skills-section">
+        <h2 class="section-heading">MECHA SKILLS</h2>
+        <div class="skills-grid">
+            <!-- 技能1：量子屏障阵列（核心战略防御技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/fortress-shield.jpg" alt="量子屏障阵列">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">量子屏障阵列（主动技能）</h3>
+                    <p class="skill-desc">激活10公里范围量子屏障阵列，形成3层分层防御，外层屏障抗打击强度SSS级，中层SS级，内层S级。屏障可同时保护范围内所有友军单位，持续120分钟，期间需消耗大量反物质燃料，关闭后冷却30分钟才能再次激活。</p>
+                    <div class="skill-meta">
+                        <p>冷却时间：<span>30分钟</span></p>
+                        <p>燃料消耗：<span>5kg/分钟</span></p>
+                        <p>覆盖范围：<span>10公里</span></p>
+                        <p>持续时间：<span>120分钟</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 技能2：超重炮战略打击（核心战略攻击技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/fortress-cannon.jpg" alt="超重炮战略打击">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">超重炮战略打击（主动技能）</h3>
+                    <p class="skill-desc">给406mm超重炮充能3分钟，发射1枚战略级穿甲弹，对50公里内的单个目标造成10000点伤害，可击穿敌方战舰装甲/巨型机甲核心，弹着点100米范围内产生冲击波，眩晕所有敌方单位15秒。充能期间不可中断，需专人监控能源稳定。</p>
+                    <div class="skill-meta">
+                        <p>冷却时间：<span>10分钟</span></p>
+                        <p>弹药消耗：<span>1发/次</span></p>
+                        <p>充能时间：<span>3分钟</span></p>
+                        <p>有效射程：<span>50公里</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 技能3：等离子弹幕（反机甲集群技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/fortress-plasma.jpg" alt="等离子弹幕">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">等离子弹幕（主动技能）</h3>
+                    <p class="skill-desc">激活等离子炮塔，向15公里内的指定区域发射等离子弹幕，每秒造成500点范围伤害，持续20秒，对机甲集群单位伤害提升50%，可有效压制敌方机甲冲锋。期间等离子炮塔不可移动，需其他单位掩护。</p>
+                    <div class="skill-meta">
+                        <p>冷却时间：<span>45秒</span></p>
+                        <p>能量消耗：<span>15%</span></p>
+                        <p>攻击范围：<span>15公里</span></p>
+                        <p>持续时间：<span>20秒</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 技能4：战略防御协议（被动技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/fortress-protocol.jpg" alt="战略防御协议">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">战略防御协议（被动技能）</h3>
+                    <p class="skill-desc">当堡垒-X型部署后，自动激活“战略防御协议”：范围内友军防御强度提升30%，攻击速度提升20%，同时每10分钟自动修复范围内1台受损友军机甲（修复至50%装甲值），协议持续至堡垒-X型被摧毁或撤离。</p>
+                    <div class="skill-meta">
+                        <p>激活条件：<span>部署完成</span></p>
+                        <p>友军防御：<span>+30%</span></p>
+                        <p>友军攻击：<span>+20%</span></p>
+                        <p>机甲修复：<span>1台/10分钟</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 页脚（关联首页与阵营页） -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo mecha-title">MECHA FACTION ONLINE</div>
+            <div class="footer-links">
+                <a href="index.html#top">返回首页</a>
+                <a href="sg-detail.html">返回钢铁守卫阵营</a>
+                <a href="index.html#mecha">查看更多机甲图鉴</a>
+                <a href="#">关于我们</a>
+                <a href="#">隐私政策</a>
+            </div>
+            <p class="footer-copyright">© 2025 MECHA FACTION ONLINE | 机甲设计与阵营设定均为虚构，仅供娱乐</p>
+        </div>
+    </footer>
+
+    <!-- 机甲页专属JS：图片切换与基础交互 -->
+    <script>
+        // 1. 图片切换功能（点击缩略图更新主图，带淡入效果）
+        const thumbnails = document.querySelectorAll('.mecha-thumb');
+        const mainImg = document.getElementById('mainMechaImg');
+        
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                thumbnails.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const targetImgSrc = this.getAttribute('data-img');
+                mainImg.setAttribute('src', targetImgSrc);
+                // 淡入动画
+                mainImg.style.opacity = '0';
+                setTimeout(() => {
+                    mainImg.style.opacity = '1';
+                }, 150);
+            });
+        });
+
+        // 2. 确保返回按钮点击有效（避免事件拦截）
+        document.querySelector('.back-to-faction').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>

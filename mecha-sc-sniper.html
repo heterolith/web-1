@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>精准-X型 - 星核科技机甲详情</title>
+    <!-- 引入外部字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- 关联CSS：公共样式+星核科技专属样式（金黄主题，突出科技感狙击定位） -->
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="sc-detail.css">
+    <style>
+        /* 机甲详情页专属样式：星核科技金黄主题，适配远程科技狙击定位 */
+        /* 1. 头部导航（返回阵营页+标题） */
+        .mecha-header {
+            background-color: var(--armor-dark);
+            padding: 1.5rem 0;
+            border-bottom: 2px solid var(--faction2-accent); /* 金黄边框，贴合星核科技 */
+            margin-bottom: 3rem;
+        }
+        .mecha-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        /* 返回按钮（平行四边形，金黄主题，与阵营页统一） */
+        .back-to-faction {
+            transform: skewX(-10deg);
+            background-color: rgba(255, 215, 64, 0.2);
+            border: 1px solid var(--faction2-accent);
+            color: var(--faction2-accent);
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-to-faction span {
+            transform: skewX(10deg);
+            display: inline-block;
+        }
+        .back-to-faction:hover {
+            background-color: rgba(255, 215, 64, 0.3);
+            transform: translateY(-2px) skewX(-10deg);
+            box-shadow: 0 3px 8px rgba(255, 215, 64, 0.2);
+        }
+        /* 机甲标题（突出“科技狙击”核心定位） */
+        .mecha-main-title {
+            font-size: 1.8rem;
+            color: var(--metal-silver);
+            font-family: 'Orbitron', sans-serif;
+        }
+        .mecha-subtitle {
+            font-size: 0.95rem;
+            color: var(--faction2-accent);
+            margin-top: 0.3rem;
+        }
+
+        /* 2. 图片展示区（突出量子瞄准镜、科技感狙击枪，体现星核科技属性） */
+        .mecha-gallery {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+        .mecha-main-img {
+            background-color: var(--armor-light);
+            padding: 2rem;
+            border: 1px solid var(--metal-dark);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(135deg, rgba(255,215,64,0.05) 0%, rgba(255,215,64,0.1) 100%); /* 淡金黄渐变背景 */
+        }
+        .mecha-main-img img {
+            max-width: 100%;
+            max-height: 380px;
+            object-fit: contain;
+            background-color: #0A121F; /* 深色背景凸显科技感细节 */
+            padding: 1rem;
+            border-radius: 3px;
+        }
+        .mecha-thumbnails {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .mecha-thumb {
+            width: 120px;
+            height: 80px;
+            background-color: var(--armor-light);
+            border: 1px solid var(--metal-dark);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .mecha-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #0A121F;
+            padding: 0.5rem;
+        }
+        .mecha-thumb:hover, .mecha-thumb.active {
+            border-color: var(--faction2-accent);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255,215,64,0.15); /* 金黄阴影增强科技感 */
+        }
+
+        /* 3. 参数表（金黄高亮量子瞄准、射程、科技狙击属性） */
+        .mecha-params-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+        .section-heading {
+            font-size: 1.5rem;
+            color: var(--faction2-accent);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid rgba(255, 215, 64, 0.3);
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .params-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--armor-light);
+            background-image: linear-gradient(0deg, rgba(255,215,64,0.03) 0%, rgba(255,215,64,0.05) 100%);
+        }
+        .params-table th, .params-table td {
+            padding: 1rem 1.2rem;
+            border: 1px solid var(--metal-dark);
+            text-align: left;
+        }
+        .params-table th {
+            background-color: var(--armor-dark);
+            color: var(--faction2-accent);
+            font-weight: 700;
+            width: 25%;
+        }
+        .params-table td {
+            color: var(--metal-silver);
+            line-height: 1.6;
+        }
+        .param-highlight {
+            color: var(--faction2-accent);
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(255,215,64,0.2); /* 高亮文字加金黄阴影 */
+        }
+
+        /* 4. 技能展示区（金黄主题，突出科技狙击、远程锁定能力） */
+        .mecha-skills-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+        .skill-card {
+            background-color: var(--armor-light);
+            border: 1px solid var(--metal-dark);
+            border-radius: 3px;
+            overflow: hidden;
+            transition: all 0.3s;
+            background-image: linear-gradient(180deg, rgba(255,215,64,0.03) 0%, rgba(255,215,64,0.05) 100%);
+        }
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-color: rgba(255,215,64,0.5); /* 边框变金黄，增强科技感 */
+        }
+        .skill-img {
+            height: 220px;
+            background-color: var(--armor-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .skill-img img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .skill-content {
+            padding: 1.5rem;
+        }
+        .skill-name {
+            font-size: 1.2rem;
+            color: var(--faction2-accent);
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+        .skill-desc {
+            color: var(--metal-silver);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        .skill-meta {
+            font-size: 0.9rem;
+            color: var(--metal-dark);
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .skill-meta span {
+            color: var(--faction2-accent);
+            font-weight: 600;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .mecha-main-title {
+                font-size: 1.5rem;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            .params-table th, .params-table td {
+                padding: 0.8rem;
+            }
+            .params-table th {
+                width: 30%;
+            }
+            .mecha-thumb {
+                width: 100px;
+                height: 70px;
+            }
+        }
+        @media (max-width: 480px) {
+            .mecha-header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .section-heading {
+                font-size: 1.3rem;
+            }
+            .skill-img {
+                height: 180px;
+            }
+            .skill-meta {
+                gap: 1rem;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. 头部导航（返回阵营页+机甲标题） -->
+    <header class="mecha-header">
+        <div class="mecha-header-content">
+            <!-- 返回星核科技阵营页按钮（路径需与阵营页文件同级） -->
+            <a href="sc-detail.html" class="back-to-faction">
+                <span>← 返回星核科技阵营</span>
+            </a>
+            <!-- 机甲标题与定位说明（突出“科技狙击”核心特性） -->
+            <div>
+                <h1 class="mecha-main-title">精准-X型 MECHA</h1>
+                <p class="mecha-subtitle">远程科技狙击 | 星际战场精准猎手</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 机甲图片展示区（多视角+科技狙击细节） -->
+    <section class="mecha-gallery">
+        <!-- 主图：侧面视角，展示量子瞄准镜与高斯狙击枪 -->
+        <div class="mecha-main-img">
+            <img src="../images/mecha/sc-sniper-side.jpg" alt="精准-X型 侧面图" id="mainMechaImg">
+        </div>
+        <!-- 缩略图：多视角+科技细节切换 -->
+        <div class="mecha-thumbnails">
+            <div class="mecha-thumb" data-img="../images/mecha/sc-sniper-front.jpg">
+                <img src="../images/mecha/sc-sniper-front.jpg" alt="精准-X型 正面图">
+            </div>
+            <div class="mecha-thumb active" data-img="../images/mecha/sc-sniper-side.jpg">
+                <img src="../images/mecha/sc-sniper-side.jpg" alt="精准-X型 侧面图（狙击枪特写）">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/sc-sniper-back.jpg">
+                <img src="../images/mecha/sc-sniper-back.jpg" alt="精准-X型 背部图（能源模块）">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/sc-sniper-scope.jpg">
+                <img src="../images/mecha/sc-sniper-scope.jpg" alt="精准-X型 量子瞄准镜细节">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/sc-sniper-shot.jpg">
+                <img src="../images/mecha/sc-sniper-shot.jpg" alt="精准-X型 狙击开火特效">
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 机甲详细参数表（突出科技狙击、量子瞄准、远程属性） -->
+    <section class="mecha-params-section">
+        <h2 class="section-heading">MECHA PARAMETERS</h2>
+        <table class="params-table">
+            <tr>
+                <<<<th>基础信息</</</th>
+                <td>精准-X型（星核科技远程科技狙击机甲，星际纪元457年服役，搭载第三代量子瞄准系统，专为高价值目标精准打击设计）</td>
+            </tr>
+            <tr>
+                <<<<th>机体高度</</</th>
+                <td>18.1米（含狙击枪支架，不含支架17.3米，机身窄长，减少狙击时暴露面积）</td>
+            </tr>
+            <tr>
+                <<<<th>机体重量</</</th>
+                <td>空载 <span class="param-highlight">62.4吨</span> / 满载（武器+弹药+瞄准设备）<span class="param-highlight">67.9吨</span>（重量集中在狙击系统，保证射击稳定性）</td>
+            </tr>
+            <tr>
+                <<<<th>核心能源</</th>
+                <td>核聚变反应堆（功率1600kW，续航<span class="param-highlight">72小时</span>，狙击时低功率运行，减少热量辐射与雷达暴露概率）</td>
+            </tr>
+            <tr>
+                <<<<th>狙击系统（核心科技优势）</</th>
+                <td>
+                    1. 第三代量子瞄准镜（有效射程<span class="param-highlight">10公里</span>，支持2000倍变焦，自动计算风速/重力/大气干扰，命中率<span class="param-highlight">99.9%</span>）<br>
+                    2. 高斯狙击枪（口径28mm，穿甲深度<span class="param-highlight">1200mm</span>，子弹初速8000m/s，无音爆、无弹道轨迹，难以追踪）<br>
+                    3. 稳定支架（狙击时弹出地面电磁支架，抵消后坐力，连续射击精度偏差≤1cm）
+                </td>
+            </tr>
+            <tr>
+                <<<<th>隐蔽系统</</th>
+                <td>
+                    1. 环境伪装涂层（机身颜色自动匹配周围环境，伪装响应时间<span class="param-highlight">0.3秒</span>，视觉隐蔽率95%）<br>
+                    2. 低辐射模块（减少热量与电磁辐射，被红外/雷达探测概率降低85%）<br>
+                    3. 静音射击系统（开火时无噪音，避免暴露位置，适合连续狙击）
+                </td>
+            </tr>
+            <tr>
+                <<<<th>动力系统</</th>
+                <td>2台静音电动引擎（最大速度<span class="param-highlight">220km/h</span>，侧重隐蔽移动，非高速机动，适合狙击后快速转移）</td>
+            </tr>
+            <tr>
+                <<<<th>防御系统</</th>
+                <td>
+                    1. 轻量化复合装甲（厚度40-50mm，重点防护驾驶舱，基础防御强度B级）<br>
+                    2. 应急护盾（被发现时自动激活，防御强度A级，持续10秒，冷却60秒）<br>
+                    3. 反锁定模块（干扰敌方锁定系统，降低被敌方狙击/导弹瞄准概率）
+                </td>
+            </tr>
+            <tr>
+                <<<<th>武器配置</</th>
+                <td>
+                    1. 高斯狙击枪（备弹<span class="param-highlight">25发</span>，可切换穿甲弹/爆破弹，每发装填时间2.5秒）<br>
+                    2. 自卫手枪（备用武器，口径9mm，有效射程500米，应对近距离突发情况）<br>
+                    3. 微型烟雾弹（2枚，干扰敌方视线，掩护转移，爆炸范围15米）
+                </td>
+            </tr>
+            <tr>
+                <<<<th>电子设备（科技核心）</</th>
+                <td>
+                    1. 远程侦查雷达（探测范围<span class="param-highlight">35公里</span>，被动接收信号，不暴露自身，可识别目标弱点位置）<br>
+                    2. 目标分析系统（自动分析目标装甲薄弱点，标记最佳射击位置，提升伤害20%）<br>
+                    3. 加密数据链（与指挥中心/友军实时共享目标信息，支持协同狙击）
+                </td>
+            </tr>
+            <tr>
+                <<<<th>操作配置</</th>
+                <td>1名驾驶员（需通过“量子瞄准操作认证”“远程狙击战术考核”，培训周期10个月，为星核科技高技术门槛机甲之一）</td>
+            </tr>
+            <tr>
+                <<<<th>制造成本</</th>
+                <td>单机<span class="param-highlight">1900万星际币</span>（量子瞄准系统成本占比60%，仅配备精英狙击小队）</td>
+            </tr>
+            <tr>
+                <<<<th>服役记录</</th>
+                <td>完成高价值目标清除任务38次，平均狙击距离9.2公里，无失败记录，被称为“星际科技狙”</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- 4. 机甲技能展示区（突出科技狙击、精准锁定能力） -->
+    <section class="mecha-skills-section">
+        <h2 class="section-heading">MECHA SKILLS</h2>
+        <div class="skills-grid">
+            <!-- 技能1：量子精准狙击（核心攻击技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/sc-sniper-shot.jpg" alt="量子精准狙击">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">量子精准狙击（主动技能）</h3>
+                    <p class="skill-desc">激活量子瞄准镜，自动分析目标弱点并标记，发射高斯狙击弹，对单个目标造成2800点伤害，命中弱点时伤害提升30%。射击后装填时间2.5秒，期间不可移动，隐蔽效果暂时减弱20%（仍低于常规机甲被发现概率）。</p>
+                    <div class="skill-meta">
+                        <p>冷却时间：<span>4.5秒（含装填）</span></p>
+                        <p>弹药消耗：<span>1发/次</span></p>
+                        <p>有效射程：<span>10公里</span></p>
+                        <p>弱点伤害：<span>+30%</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 技能2：目标弱点分析（战术辅助技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/sc-sniper-analyze.jpg" alt="目标弱点分析">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">目标弱点分析（主动技能）</h3>
+                    <p class="skill-desc">对35公里内的指定目标进行扫描分析，1.5秒内标记其装甲薄弱点，同时获取目标移动轨迹预测（未来3秒位置），持续20秒。分析结果可共享给3公里内的友军，提升友军对该目标的伤害15%，冷却30秒。</p>
+                    <div class="skill-meta">
+                        <p>冷却时间：<span>30秒</span></p>
+                        <p>能量消耗：<span>10%</span></p>
+                        <p>扫描范围：<span>35公里</span></p>
+                        <p>效果时长：<span>20秒</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 技能3：隐蔽转移（战术防御技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/sc-sniper-move.jpg" alt="隐蔽转移">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">隐蔽转移（主动技能）</h3>
+                    <p class="skill-desc">激活环境伪装与静音引擎，向指定方向移动最大500米，移动过程中隐身效果提升60%，不被敌方雷达/视觉发现。移动结束后进入“稳定状态”，10秒内狙击精度提升25%，冷却45秒，适合狙击后快速转移阵地。</p>
+                    <div class="skill-meta">
+                        <p>冷却时间：<span>45秒</span></p>
+                        <p>能量消耗：<span>18%</span></p>
+                        <p>转移距离：<span>最大500米</span></p>
+                        <p>精度提升：<span>+25%（10秒）</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 技能4：科技狙击协议（被动技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/sc-sniper-protocol.jpg" alt="科技狙击协议">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">科技狙击协议（被动技能）</h3>
+                    <p class="skill-desc">机甲静止超过3秒后，自动激活“科技狙击协议”：量子瞄准镜精度提升30%，高斯狙击枪伤害提升15%，同时降低被敌方探测概率40%。移动后效果立即消失，再次静止3秒后重新激活，无能量消耗。</p>
+                    <div class="skill-meta">
+                        <p>激活条件：<span>静止3秒</span></p>
+                        <p>精度提升：<span>+30%</span></p>
+                        <p>伤害提升：<span>+15%</span></p>
+                        <p>探测规避：<span>+40%</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 页脚（关联首页与阵营页，完成星核科技链路闭环） -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo mecha-title">MECHA FACTION ONLINE</div>
+            <div class="footer-links">
+                <a href="index.html#top">返回首页</a>
+                <a href="sc-detail.html">返回星核科技阵营</a>
+                <a href="index.html#mecha">查看更多机甲图鉴</a>
+                <a href="#">关于我们</a>
+                <a href="#">隐私政策</a>
+            </div>
+            <p class="footer-copyright">© 2025 MECHA FACTION ONLINE | 机甲设计与阵营设定均为虚构，仅供娱乐</p>
+        </div>
+    </footer>
+
+    <!-- 机甲页专属JS：图片切换与基础交互 -->
+    <script>
+        // 1. 图片切换功能（点击缩略图更新主图，带淡入效果）
+        const thumbnails = document.querySelectorAll('.mecha-thumb');
+        const mainImg = document.getElementById('mainMechaImg');
+        
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                thumbnails.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const targetImgSrc = this.getAttribute('data-img');
+                mainImg.setAttribute('src', targetImgSrc);
+                // 淡入动画
+                mainImg.style.opacity = '0';
+                setTimeout(() => {
+                    mainImg.style.opacity = '1';
+                }, 150);
+            });
+        });
+
+        // 2. 确保返回按钮点击有效（避免事件拦截）
+        document.querySelector('.back-to-faction').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>

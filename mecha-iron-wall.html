@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>铁壁-III型 - 钢铁守卫机甲详情</title>
+    <!-- 引入外部字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- 关联CSS：公共样式+钢铁守卫专属样式（保持赤红主题统一） -->
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="sg-detail.css">
+    <style>
+        /* 机甲详情页专属样式：适配2D图片展示 */
+        /* 1. 机甲头部导航（返回阵营页+标题） */
+        .mecha-header {
+            background-color: var(--armor-dark);
+            padding: 1.5rem 0;
+            border-bottom: 2px solid var(--faction1-accent); /* 赤红边框，贴合钢铁守卫 */
+            margin-bottom: 3rem;
+        }
+        .mecha-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        /* 返回阵营页按钮（平行四边形，与阵营页风格统一） */
+        .back-to-faction {
+            transform: skewX(-10deg);
+            background-color: rgba(255, 82, 82, 0.2);
+            border: 1px solid var(--faction1-accent);
+            color: var(--faction1-accent);
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-to-faction span {
+            transform: skewX(10deg);
+            display: inline-block;
+        }
+        .back-to-faction:hover {
+            background-color: rgba(255, 82, 82, 0.3);
+            transform: translateY(-2px) skewX(-10deg);
+            box-shadow: 0 3px 8px rgba(255, 82, 82, 0.2);
+        }
+        /* 机甲标题 */
+        .mecha-main-title {
+            font-size: 1.8rem;
+            color: var(--metal-silver);
+            font-family: 'Orbitron', sans-serif;
+        }
+        .mecha-subtitle {
+            font-size: 0.95rem;
+            color: var(--faction1-accent);
+            margin-top: 0.3rem;
+        }
+
+        /* 2. 机甲图片展示区（2D多图切换） */
+        .mecha-gallery {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+        /* 主图容器 */
+        .mecha-main-img {
+            background-color: var(--armor-light);
+            padding: 2rem;
+            border: 1px solid var(--metal-dark);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .mecha-main-img img {
+            max-width: 100%;
+            max-height: 380px;
+            object-fit: contain;
+            background-color: #0A121F; /* 深色背景衬托图片，避免透明图显脏 */
+            padding: 1rem;
+            border-radius: 3px;
+        }
+        /* 缩略图容器 */
+        .mecha-thumbnails {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .mecha-thumb {
+            width: 120px;
+            height: 80px;
+            background-color: var(--armor-light);
+            border: 1px solid var(--metal-dark);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .mecha-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #0A121F;
+            padding: 0.5rem;
+        }
+        .mecha-thumb:hover, .mecha-thumb.active {
+            border-color: var(--faction1-accent);
+            transform: scale(1.05);
+        }
+
+        /* 3. 机甲参数表（清晰易读，赤红高亮关键值） */
+        .mecha-params-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+        .section-heading {
+            font-size: 1.5rem;
+            color: var(--faction1-accent);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid rgba(255, 82, 82, 0.3);
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .params-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--armor-light);
+        }
+        .params-table th, .params-table td {
+            padding: 1rem 1.2rem;
+            border: 1px solid var(--metal-dark);
+            text-align: left;
+        }
+        .params-table th {
+            background-color: var(--armor-dark);
+            color: var(--faction1-accent);
+            font-weight: 700;
+            width: 25%;
+        }
+        .params-table td {
+            color: var(--metal-silver);
+            line-height: 1.6;
+        }
+        /* 关键参数高亮（如S级、89.5吨） */
+        .param-highlight {
+            color: var(--faction1-accent);
+            font-weight: 700;
+        }
+
+        /* 4. 机甲技能展示区（图文结合，赤红主题） */
+        .mecha-skills-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 20px;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+        .skill-card {
+            background-color: var(--armor-light);
+            border: 1px solid var(--metal-dark);
+            border-radius: 3px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .skill-img {
+            height: 220px;
+            background-color: var(--armor-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .skill-img img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .skill-content {
+            padding: 1.5rem;
+        }
+        .skill-name {
+            font-size: 1.2rem;
+            color: var(--faction1-accent);
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+        .skill-desc {
+            color: var(--metal-silver);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        .skill-meta {
+            font-size: 0.9rem;
+            color: var(--metal-dark);
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .skill-meta span {
+            color: var(--faction1-accent);
+            font-weight: 600;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .mecha-main-title {
+                font-size: 1.5rem;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr; /* 小屏幕1列布局 */
+            }
+            .params-table th, .params-table td {
+                padding: 0.8rem;
+            }
+            .params-table th {
+                width: 30%;
+            }
+            .mecha-thumb {
+                width: 100px;
+                height: 70px;
+            }
+        }
+        @media (max-width: 480px) {
+            .mecha-header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .section-heading {
+                font-size: 1.3rem;
+            }
+            .skill-img {
+                height: 180px;
+            }
+            .skill-meta {
+                gap: 1rem;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. 机甲头部导航（返回阵营页+标题） -->
+    <header class="mecha-header">
+        <div class="mecha-header-content">
+            <!-- 返回钢铁守卫阵营页按钮 -->
+            <a href="sg-detail.html" class="back-to-faction">
+                <span>← 返回钢铁守卫阵营</span>
+            </a>
+            <!-- 机甲标题与副标题 -->
+            <div>
+                <h1 class="mecha-main-title">铁壁-III型 MECHA</h1>
+                <p class="mecha-subtitle">常规防御主力 | 星际防线移动堡垒</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 机甲图片展示区（2D多图，预留图片位置） -->
+    <section class="mecha-gallery">
+        <!-- 主图：替换src为你的机甲正面图路径 -->
+        <div class="mecha-main-img">
+            <img src="../images/mecha/iron-wall-front.jpg" alt="铁壁-III型 正面图" id="mainMechaImg">
+        </div>
+        <!-- 缩略图：点击切换主图 -->
+        <div class="mecha-thumbnails">
+            <div class="mecha-thumb active" data-img="../images/mecha/iron-wall-front.jpg">
+                <img src="../images/mecha/iron-wall-front.jpg" alt="铁壁-III型 正面图">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/iron-wall-side.jpg">
+                <img src="../images/mecha/iron-wall-side.jpg" alt="铁壁-III型 侧面图">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/iron-wall-back.jpg">
+                <img src="../images/mecha/iron-wall-back.jpg" alt="铁壁-III型 背部图">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/iron-wall-weapon.jpg">
+                <img src="../images/mecha/iron-wall-weapon.jpg" alt="铁壁-III型 武器细节">
+            </div>
+            <div class="mecha-thumb" data-img="../images/mecha/iron-wall-shield.jpg">
+                <img src="../images/mecha/iron-wall-shield.jpg" alt="铁壁-III型 护盾展开">
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 机甲详细参数表（比阵营页更完整） -->
+    <section class="mecha-params-section">
+        <h2 class="section-heading">MECHA PARAMETERS</h2>
+        <table class="params-table">
+            <tr>
+                <<th>基础信息</</th>
+                <td>铁壁-III型（钢铁守卫量产型防御机甲，星际纪元452年正式服役）</td>
+            </tr>
+            <tr>
+                <<th>机体高度</</th>
+                <td>18.7米（含顶部雷达天线，不含天线17.9米）</td>
+            </tr>
+            <tr>
+                <<th>机体重量</</th>
+                <td>空载 <span class="param-highlight">89.5吨</span> / 满载（武器+弹药）<span class="param-highlight">98.2吨</span></td>
+            </tr>
+            <tr>
+                <<th>核心能源</</th>
+                <td>微型核聚变反应堆（功率1200kW，续航<span class="param-highlight">72小时</span>，外接能源可扩展至120小时）</td>
+            </tr>
+            <tr>
+                <<th>防御系统</</th>
+                <td>
+                    1. 双层量子护盾（外层抗打击强度<span class="param-highlight">S级</span>，内层抗打击强度<span class="param-highlight">A级</span>）<br>
+                    2. 钛合金复合装甲（胸部/肩部厚度<span class="param-highlight">150mm</span>，腿部厚度80mm）<br>
+                    3. 纳米应急修复（受损后每秒修复0.5%装甲值，需能源支持）
+                </td>
+            </tr>
+            <tr>
+                <<th>动力系统</</th>
+                <td>4台重型液压引擎（最大行进速度<span class="param-highlight">60km/h</span>，越野速度35km/h，最大爬坡角度35°）</td>
+            </tr>
+            <tr>
+                <<th>武器配置</</th>
+                <td>
+                    1. 2门120mm防御火炮（射速10发/分钟，弹药类型：穿甲弹/高爆弹，有效射程8km）<br>
+                    2. 1具电磁脉冲发射器（有效范围<span class="param-highlight">50米</span>，瘫痪敌方电子设备15秒，冷却45秒）<br>
+                    3. 2挺7.62mm近防机枪（射速1200发/分钟，拦截导弹/步兵，有效射程1.5km）
+                </td>
+            </tr>
+            <tr>
+                <<th>电子设备</</th>
+                <td>
+                    1. 远程探测雷达（探测范围50km，识别敌方机甲/飞行器准确率98%）<br>
+                    2. 友军识别系统（兼容联邦所有阵营机甲，避免误击）<br>
+                    3. 加密通讯模块（10公里内小队实时通讯，抗干扰等级A级）
+                </td>
+            </tr>
+            <tr>
+                <<th>操作配置</</th>
+                <td>1名驾驶员（负责移动/防御）+ 1名武器操作员（负责火炮/机枪），支持单人应急操作</td>
+            </tr>
+            <tr>
+                <<th>制造成本</</th>
+                <td>单机<span class="param-highlight">1200万星际币</span>（约合联邦币3.6亿），量产100台以上单价降至980万星际币</td>
+            </tr>
+            <tr>
+                <<th>服役记录</</th>
+                <td>参与「卡伦星系防御战」「奥尔特云护航任务」「阿尔法-7堡垒保卫战」，累计击毁敌方机甲127台</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- 4. 机甲技能展示区（图文结合，预留技能图位置） -->
+    <section class="mecha-skills-section">
+        <h2 class="section-heading">MECHA SKILLS</h2>
+        <div class="skills-grid">
+            <!-- 技能1：量子护盾展开 -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/iron-wall-shield.jpg" alt="量子护盾展开">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">量子护盾展开（主动技能）</h3>
+                    <p class="skill-desc">激活双层量子护盾，形成覆盖机甲全身的球形防御屏障，可抵御S级以下穿甲弹、能量炮攻击，持续20秒。护盾承受伤害达到上限会提前破碎，破碎后需冷却30秒才能再次激活。</p>
+                    <div class="skill-meta">
+                        <p>冷却时间：<span>30秒</span></p>
+                        <p>能量消耗：<span>25%</span></p>
+                        <p>防御强度：<span>S级</span></p>
+                        <p>持续时间：<span>20秒</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 技能2：电磁脉冲干扰 -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/iron-wall-emp.jpg" alt="电磁脉冲干扰">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">电磁脉冲干扰（主动技能）</h3>
+                    <p class="skill-desc">向前方50米范围发射扇形电磁脉冲，瘫痪敌方机甲的电子系统（瞄准、雷达、武器装填），持续15秒；对无电子防护的步兵单位可直接造成10秒眩晕效果，不影响友军设备。</p>
+                    <div class="skill-meta">
+                        <p>冷却时间：<span>45秒</span></p>
+                        <p>能量消耗：<span>15%</span></p>
+                        <p>影响范围：<span>50米（扇形）</span></p>
+                        <p>瘫痪时长：<span>15秒（机甲）</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 技能3：防御火炮连射 -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/iron-wall-cannon.jpg" alt="防御火炮连射">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">防御火炮连射（主动技能）</h3>
+                    <p class="skill-desc">临时提升120mm火炮射速至20发/分钟（常规10发/分钟），持续10秒，对敌方集群目标或装甲单位造成密集打击。连射结束后火炮需冷却20秒，且消耗双倍弹药（20发/分钟）。</p>
+                    <div class="skill-meta">
+                        <p>冷却时间：<span>20秒</span></p>
+                        <p>弹药消耗：<span>双倍</span></p>
+                        <p>持续时间：<span>10秒</span></p>
+                        <p>射速提升：<span>100%</span></p>
+                    </div>
+                </div>
+            </div>
+            <!-- 技能4：紧急维修（被动技能） -->
+            <div class="skill-card">
+                <div class="skill-img">
+                    <img src="../images/skills/iron-wall-repair.jpg" alt="紧急维修">
+                </div>
+                <div class="skill-content">
+                    <h3 class="skill-name">紧急维修（被动技能）</h3>
+                    <p class="skill-desc">当机甲装甲受损程度低于30%时，自动激活纳米修复系统，每秒修复1%装甲值，直至装甲恢复至50%或机甲再次受到攻击。无需主动激活，无冷却时间，修复过程不消耗额外能源。</p>
+                    <div class="skill-meta">
+                        <p>触发条件：<span>装甲≤30%</span></p>
+                        <p>修复速度：<span>1%/秒</span></p>
+                        <p>修复上限：<span>50%</span></p>
+                        <p>能源消耗：<span>0%</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 页脚（关联首页与阵营页） -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo mecha-title">MECHA FACTION ONLINE</div>
+            <div class="footer-links">
+                <a href="index.html#top">返回首页</a>
+                <a href="sg-detail.html">返回钢铁守卫阵营</a>
+                <a href="index.html#mecha">查看更多机甲图鉴</a>
+                <a href="#">关于我们</a>
+                <a href="#">隐私政策</a>
+            </div>
+            <p class="footer-copyright">© 2025 MECHA FACTION ONLINE | 机甲设计与阵营设定均为虚构，仅供娱乐</p>
+        </div>
+    </footer>
+
+    <!-- 机甲页专属JS：图片切换、参数高亮 -->
+    <script>
+        // 1. 机甲图片切换功能（点击缩略图换主图）
+        const thumbnails = document.querySelectorAll('.mecha-thumb');
+        const mainImg = document.getElementById('mainMechaImg');
+        
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                // 移除所有缩略图的active类
+                thumbnails.forEach(t => t.classList.remove('active'));
+                // 给当前点击的缩略图加active类
+                this.classList.add('active');
+                // 替换主图src
+                const imgSrc = this.getAttribute('data-img');
+                mainImg.setAttribute('src', imgSrc);
+                // 淡入效果
+                mainImg.style.opacity = '0';
+                setTimeout(() => {
+                    mainImg.style.opacity = '1';
+                }, 150);
+            });
+        });
+
+        // 2. 确保返回按钮点击有效
+        document.querySelector('.back-to-faction').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>

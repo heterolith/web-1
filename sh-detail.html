@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暗影佣兵团 - 机甲阵营详情</title>
+    <!-- 引入外部字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- 关联CSS：公共样式+暗影佣兵团专属样式 -->
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="sh-detail.css">
+    <style>
+        /* 新增：暗影佣兵团专属查看详情按钮（平行四边形，紫黑主题） */
+        .mecha-view-btn {
+            transform: skewX(-10deg); /* 与切换按钮一致的平行四边形 */
+            background-color: rgba(171, 71, 188, 0.2); /* 暗影紫黑透明背景 */
+            border: 1px solid var(--faction3-accent); /* 紫黑边框 */
+            color: var(--faction3-accent); /* 紫黑文字 */
+            padding: 0.3rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: all 0.3s;
+            margin-left: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* 按钮内文字矫正（水平显示，抵消倾斜） */
+        .mecha-view-btn span {
+            transform: skewX(10deg);
+            display: inline-block;
+        }
+        /* hover效果：上浮+紫黑阴影，贴合暗影风格 */
+        .mecha-view-btn:hover {
+            background-color: rgba(171, 71, 188, 0.3);
+            transform: translateY(-2px) skewX(-10deg);
+            box-shadow: 0 3px 8px rgba(171, 71, 188, 0.2);
+        }
+        /* 小屏幕适配：按钮换行，避免文字挤压 */
+        @media (max-width: 480px) {
+            .mecha-view-btn {
+                margin-left: 0;
+                margin-top: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. 暗影佣兵团Banner（带动画） -->
+    <section class="faction-banner animate-from-bottom">
+        <div class="container">
+            <div class="banner-content">
+                <div class="banner-icon">
+                    <div class="icon-inner">SH</div>
+                </div>
+                <div class="banner-text">
+                    <h1 class="mecha-title">暗影佣兵团</h1>
+                    <p class="faction-tag">STEALTH FACTION · 星际独行猎手</p>
+                    <p class="faction-slogan">「于暗影中潜行，于无声中制胜」</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 暗影佣兵团核心内容区（带动画） -->
+    <section class="faction-core animate-from-bottom">
+        <div class="container">
+            <!-- 2.1 阵营背景 -->
+            <div class="core-section">
+                <h2 class="section-title mecha-title">阵营背景</h2>
+                <div class="section-content">
+                    <p>暗影佣兵团成立于星际纪元398年，由前星际特种部队成员「里昂·布莱克」组建，因拒绝联邦军队的“无差别打击”命令而脱离，转而以“接受委托、不问立场、只重结果”为准则，成为星际中最神秘的中立武装力量。</p>
+                    <p>佣兵团成员多为退役特种兵、机甲改造师与黑客，核心优势是“隐形突袭”与“单兵作战”—— 其自主研发的「纳米隐形涂层」可让机甲在雷达与视觉上双重隐身，「多功能战术模块」能适配狙击、爆破、侦查等多种任务需求。目前佣兵团无固定总部，成员通过加密通讯接受委托，主要承接星际海盗清剿、VIP护送、情报获取等高危任务，收费高昂但成功率超95%，是星际中“既让人忌惮，又让人依赖”的存在。</p>
+                </div>
+            </div>
+
+            <!-- 2.2 核心机甲（已加平行四边形查看按钮，暗影紫黑主题） -->
+            <div class="core-section">
+                <h2 class="section-title mecha-title">核心机甲</h2>
+                <div class="mecha-switcher">
+                    <button class="mecha-btn active" data-mecha="shadow"><span>暗影-II型</span></button>
+                    <button class="mecha-btn" data-mecha="sniper"><span>幽灵-V型</span></button>
+                    <button class="mecha-btn" data-mecha="tactical"><span>战术-VIII型</span></button>
+                </div>
+                <div class="mecha-detail">
+                    <!-- 暗影-II型（默认显示） -->
+                    <div class="mecha-info active" id="shadow">
+                        <div class="mecha-img">
+                            <div class="img-placeholder">
+                                <span>暗影-II型 机甲示意图<br>（隐形突袭主力机型）</span>
+                            </div>
+                        </div>
+                        <div class="mecha-params">
+                            <!-- 机甲名称 + 暗影紫黑查看按钮 -->
+                            <h3 style="display: flex; align-items: center; flex-wrap: wrap;">
+                                暗影-II型（隐形突袭）
+                                <a href="mecha-shadow.html" class="mecha-view-btn">
+                                    <span>查看详情</span>
+                                </a>
+                            </h3>
+                            <ul class="params-list">
+                                <li><span class="param-name">机体高度</span>：15.8米</li>
+                                <li><span class="param-name">机体重量</span>：42.6吨</li>
+                                <li><span class="param-name">核心能源</span>：低温核电池（续航60小时，低热量无辐射）</li>
+                                <li><span class="param-name">特殊系统</span>：纳米隐形涂层（持续隐身时间：4小时）、声波干扰器</li>
+                                <li><span class="param-name">武器配置</span>：1把高频振动刀（无声破甲）、2枚微型静音炸弹（范围瘫痪）</li>
+                                <li><span class="param-name">作战定位</span>：潜入暗杀、设施破坏、情报窃取</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 幽灵-V型（默认隐藏） -->
+                    <div class="mecha-info" id="sniper">
+                        <div class="mecha-img">
+                            <div class="img-placeholder">
+                                <span>幽灵-V型 机甲示意图<br>（远程隐身狙击机型）</span>
+                            </div>
+                        </div>
+                        <div class="mecha-params">
+                            <h3 style="display: flex; align-items: center; flex-wrap: wrap;">
+                                幽灵-V型（远程隐身狙击）
+                                <a href="mecha-sniper.html" class="mecha-view-btn">
+                                    <span>查看详情</span>
+                                </a>
+                            </h3>
+                            <ul class="params-list">
+                                <li><span class="param-name">机体高度</span>：17.2米</li>
+                                <li><span class="param-name">机体重量</span>：56.8吨</li>
+                                <li><span class="param-name">核心能源</span>：核聚变反应堆（续航72小时）</li>
+                                <li><span class="param-name">特殊系统</span>：量子隐身屏障（狙击时持续隐身）、超远距瞄准镜（有效射程：15公里）</li>
+                                <li><span class="param-name">武器配置</span>：1门静音高斯狙击枪（穿甲深度：1500mm）、1具反雷达诱饵弹</li>
+                                <li><span class="param-name">作战定位</span>：远程暗杀、高价值目标清除、战场监视</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 战术-VIII型（默认隐藏） -->
+                    <div class="mecha-info" id="tactical">
+                        <div class="mecha-img">
+                            <div class="img-placeholder">
+                                <span>战术-VIII型 机甲示意图<br>（多功能战术机型）</span>
+                            </div>
+                        </div>
+                        <div class="mecha-params">
+                            <h3 style="display: flex; align-items: center; flex-wrap: wrap;">
+                                战术-VIII型（多功能战术）
+                                <a href="mecha-tactical.html" class="mecha-view-btn">
+                                    <span>查看详情</span>
+                                </a>
+                            </h3>
+                            <ul class="params-list">
+                                <li><span class="param-name">机体高度</span>：16.5米</li>
+                                <li><span class="param-name">机体重量</span>：51.3吨</li>
+                                <li><span class="param-name">核心能源</span>：高效离子电池（续航50小时）</li>
+                                <li><span class="param-name">特殊系统</span>：模块化武器接口（可快速切换武器）、战场急救模块</li>
+                                <li><span class="param-name">武器配置</span>：1挺脉冲机枪、1具火箭筒、1套战术盾牌（可拆卸）</li>
+                                <li><span class="param-name">作战定位</span>：VIP护送、小规模冲突、应急救援</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.3 战术体系 -->
+            <div class="core-section">
+                <h2 class="section-title mecha-title">战术体系</h2>
+                <div class="tactics-content">
+                    <div class="tactics-item">
+                        <h3 class="tactics-name">「暗影刺杀」（单人潜入战术）</h3>
+                        <p class="tactics-desc">单人驾驶暗影-II型机甲，利用纳米隐形涂层潜入敌方基地，通过声波干扰器瘫痪局部监控，用高频振动刀无声解决守卫，完成目标暗杀或数据窃取后，部署微型炸弹制造混乱，趁乱撤离。该战术曾在「联邦议员护卫任务」中，成功清除3名潜伏刺客，未触发任何警报。</p>
+                    </div>
+                    <div class="tactics-item">
+                        <h3 class="tactics-name">「幽灵狙击」（远程清除战术）</h3>
+                        <p class="tactics-desc">1台幽灵-V型机甲在10公里外隐蔽部署，开启量子隐身屏障锁定目标，1台暗影-II型机甲潜入敌方区域，通过加密通讯提供实时坐标，幽灵-V型发动精准狙击后，两者分别从不同方向撤离，全程不暴露位置。该战术曾用于清除星际海盗头目，成功率100%。</p>
+                    </div>
+                    <div class="tactics-item">
+                        <h3 class="tactics-name">「战术协同」（小规模团队战术）</h3>
+                        <p class="tactics-desc">2台战术-VIII型机甲搭配1台暗影-II型机甲执行任务：暗影-II型负责潜行破防，战术-VIII型分别携带机枪与火箭筒，前者提供火力压制，后者摧毁敌方重武器，完成任务后用急救模块处理伤员，快速撤离。该战术适合VIP护送或小型设施攻坚战，曾成功抵御10倍兵力的海盗围攻。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.4 招募要求 -->
+            <div class="core-section">
+                <h2 class="section-title mecha-title">招募要求</h2>
+                <div class="recruit-content">
+                    <ul class="recruit-list">
+                        <li>1. 无固定国籍/阵营限制，无公开犯罪记录（接受匿名身份申请），年龄22-40周岁；</li>
+                        <li>2. 具备至少3年机甲操作经验，擅长单兵作战，通过“隐身渗透”“远程狙击”“应急逃生”三项测试；</li>
+                        <li>3. 掌握基础黑客技术（能破解初级安保系统）或医疗急救能力（优先招募双技能者）；</li>
+                        <li>4. 能严格遵守“不泄露任务信息、不追问委托背景”的保密准则，适应长期单独执行任务；</li>
+                        <li>5. 有特种部队、情报机构或退役机甲驾驶员经历者优先，需通过忠诚度背景调查。</li>
+                    </ul>
+                    <div class="recruit-btn">
+                        <a href="index.html#community" class="btn-primary">前往玩家社区报名</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 页脚 -->
+    <footer class="footer animate-from-bottom">
+        <div class="footer-content">
+            <div class="footer-logo mecha-title">MECHA FACTION ONLINE</div>
+            <div class="footer-links">
+                <a href="index.html#top">返回首页</a>
+                <a href="#">关于我们</a>
+                <a href="#">隐私政策</a>
+                <a href="#">联系客服</a>
+            </div>
+            <p class="footer-copyright">© 2025 MECHA FACTION ONLINE | 机甲设计与阵营设定均为虚构，仅供娱乐</p>
+        </div>
+    </footer>
+
+    <!-- 关联暗影佣兵团专属JS -->
+    <script src="sh-detail.js"></script>
+    <script>
+        // 确保查看按钮点击有效，无事件拦截问题
+        document.querySelectorAll('.mecha-view-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                window.location.href = this.getAttribute('href');
+            });
+        });
+    </script>
+</body>
+</html>
